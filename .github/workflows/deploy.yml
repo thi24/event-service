@@ -17,7 +17,7 @@ jobs:
 
     steps:
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
 
     - name: Log in to the Container registry
       uses: docker/login-action@v3
@@ -57,8 +57,8 @@ jobs:
         wget https://github.com/mikefarah/yq/releases/download/v4.42.1/yq_linux_amd64 -O yq &&\
         chmod +x yq
         NEW_VERSION=${GITHUB_RUN_ID}
-        yq e ".services.benevolo.event-service.image = \"ghcr.io/thi24/benevolo.event-service:$NEW_VERSION\"" -i docker-compose.yml
-    
+        yq e '.services["benevolo.event-service"].image = "ghcr.io/thi24/benevolo.event-service:'"$NEW_VERSION"'"' -i docker-compose.yml
+
     - name: Commit and push changes
       run: |
         git commit -a -m "updated by GitHub Actions"
