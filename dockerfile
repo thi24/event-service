@@ -7,6 +7,10 @@ RUN mvn -f /home/app/pom.xml clean package
 
 FROM registry.access.redhat.com/ubi8/openjdk-17:1.16-2
 ENV LANGUAGE='en_US:en'
+ARG DATABASE_USERNAME
+ARG DATABASE_PASSWORD
+ENV DATABASE_USERNAME $DATABASE_USERNAME
+ENV DATABASE_PASSWORD $DATABASE_PASSWORD
 
 USER jboss
 COPY --from=build-stage /home/app/target/quarkus-app/lib/ /deployments/lib/
