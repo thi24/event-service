@@ -6,11 +6,10 @@ import com.benevolo.mapper.EventMapper;
 import com.benevolo.repo.EventRepo;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EntityResult;
 import jakarta.ws.rs.NotFoundException;
 
 import java.util.List;
+
 
 @ApplicationScoped
 public class EventService {
@@ -27,7 +26,8 @@ public class EventService {
     }
 
     public void save(EventDTO eventDTO) {
-        eventRepo.save(new EventEntity(eventDTO.name(), eventDTO.startsAt(), eventDTO.endsAt()));
+        EventEntity eventEntity = EventMapper.map(eventDTO);
+        eventRepo.save(eventEntity);
     }
 
     public EventDTO findById(String eventId) {

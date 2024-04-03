@@ -12,7 +12,24 @@ public class EventMapper {
     }
 
     public static EventDTO map(EventEntity event) {
-        return new EventDTO(event.getName(), event.getStartsAt(), event.getEndsAt());
+        return new EventDTO(
+                event.getId(),
+                event.getEventName(),
+                event.getStartsAt(),
+                event.getEndsAt(),
+                AddressMapper.map(event.getAddress()),
+                event.getDescription()
+        );
+    }
+
+    public static EventEntity map(EventDTO eventDTO) {
+        return new EventEntity(
+                eventDTO.eventName(),
+                eventDTO.startsAt(),
+                eventDTO.endsAt(),
+                AddressMapper.map(eventDTO.address()),
+                eventDTO.description()
+        );
     }
 
 }
