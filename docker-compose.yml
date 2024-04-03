@@ -1,8 +1,14 @@
 version: '3.8'
-
 services:
-  admin_backend:
-    container_name: admin_backend
+  benevolo.event-service:
     build: .
-    ports:
-      - '8080:8080'
+    container_name: benevolo.event-service
+    image: ghcr.io/thi24/benevolo.event-service:${GITHUB_RUN_ID}
+    environment:
+      - TZ=Europe/Berlin
+    networks:
+      - backend
+
+networks:
+  backend:
+    external: true
