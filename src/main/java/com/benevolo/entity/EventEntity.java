@@ -17,7 +17,7 @@ public class EventEntity {
     private LocalDateTime startsAt;
     @Column(name = "ends_at")
     private LocalDateTime endsAt;
-    @OneToOne(mappedBy = "event")
+    @OneToOne()
     @JoinColumn(name = "address_id")
     private AddressEntity address;
     @Column(name = "description")

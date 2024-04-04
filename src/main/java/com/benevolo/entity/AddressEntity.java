@@ -18,7 +18,7 @@ public class AddressEntity {
     private String state;
     @Column(name = "zip")
     private String zip;
-    @OneToOne(fetch = jakarta.persistence.FetchType.LAZY)
+    @OneToOne(mappedBy = "address", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private EventEntity event;
 
     public AddressEntity(String street, String city, String state, String zip, EventEntity event) {

@@ -9,7 +9,9 @@ CREATE TABLE address (
      city VARCHAR(255),
      zip VARCHAR(255),
      country VARCHAR(255),
-     CONSTRAINT pk_address PRIMARY KEY (id)
+     event_id VARCHAR(255),
+     CONSTRAINT pk_address PRIMARY KEY (id),
+     CONSTRAINT fk_address_event FOREIGN KEY (event_id) REFERENCES event(id)
 );
 
 CREATE TABLE event (
