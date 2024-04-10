@@ -24,6 +24,7 @@ public class EventMapper {
 
     public static EventEntity map(EventDTO eventDTO) {
         return new EventEntity(
+                eventDTO.id(),
                 eventDTO.eventName(),
                 eventDTO.startsAt(),
                 eventDTO.endsAt(),
