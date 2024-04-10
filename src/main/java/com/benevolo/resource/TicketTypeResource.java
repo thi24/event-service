@@ -10,11 +10,11 @@ import org.jboss.resteasy.reactive.RestQuery;
 import java.util.List;
 
 @Path("/ticket-types")
-public class TicketTypeRessource {
+public class TicketTypeResource {
     private final TicketTypeService ticketTypeService;
 
     @Inject
-    public TicketTypeRessource(TicketTypeService ticketTypeService) {
+    public TicketTypeResource(TicketTypeService ticketTypeService) {
         this.ticketTypeService = ticketTypeService;
     }
 
