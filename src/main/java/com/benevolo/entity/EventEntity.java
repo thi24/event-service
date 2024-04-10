@@ -3,6 +3,7 @@ package com.benevolo.entity;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -22,12 +23,22 @@ public class EventEntity {
     private AddressEntity address;
     @Column(name = "description")
     private String description;
+    @OneToMany(mappedBy = "event")
+    private List<TicketTypeEntity> ticketTypes;
 
     public EventEntity() {
     }
 
     public EventEntity(String eventName, LocalDateTime startsAt, LocalDateTime endsAt, AddressEntity address, String description) {
-        this.id = UUID.randomUUID().toString();
+        this.eventName = eventName;
+        this.startsAt = startsAt;
+        this.endsAt = endsAt;
+        this.address = address;
+        this.description = description;
+    }
+
+    public EventEntity(String id, String eventName, LocalDateTime startsAt, LocalDateTime endsAt, AddressEntity address, String description) {
+        this.id = id;
         this.eventName = eventName;
         this.startsAt = startsAt;
         this.endsAt = endsAt;
@@ -82,5 +93,13 @@ public class EventEntity {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public List<TicketTypeEntity> getTicketTypes() {
+        return ticketTypes;
+    }
+
+    public void setTicketTypes(List<TicketTypeEntity> ticketTypes) {
+        this.ticketTypes = ticketTypes;
     }
 }
