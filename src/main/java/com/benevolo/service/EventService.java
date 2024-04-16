@@ -32,12 +32,15 @@ public class EventService {
     public void save(EventDTO eventDTO) {
         EventEntity eventEntity = EventMapper.map(eventDTO);
         AddressEntity addressEntity = eventEntity.getAddress();
+        if(eventEntity.getId() == null || eventEntity.getId().isBlank()) {
+            eventEntity.setId(java.util.UUID.randomUUID().toString());
+        }
         addressRepo.save(addressEntity);
         eventRepo.save(eventEntity);
     }
 
     public EventDTO findById(String eventId) {
-        return EventMapper.map(eventRepo.findById(eventId).orElseThrow(() -> new NotFoundException()));
+        return EventMapper.map(eventRepo.findById(eventId).orElseThrow(NotFoundException::new));
     }
 
 }

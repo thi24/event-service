@@ -12,6 +12,7 @@ jobs:
       DATABASE_DEV_PASSWORD: ${{ secrets.DATABASE_DEV_PASSWORD }}
       DATABASE_PROD_USERNAME: ${{ secrets.DATABASE_PROD_USERNAME }}
       DATABASE_PROD_PASSWORD: ${{ secrets.DATABASE_PROD_PASSWORD }}
+      KEYCLOAK_SECRET: ${{ secrets.KEYCLOAK_SECRET }}
 
     steps:
     - name: Checkout

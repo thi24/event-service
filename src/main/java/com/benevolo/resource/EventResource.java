@@ -1,16 +1,12 @@
 package com.benevolo.resource;
 
 import com.benevolo.dto.EventDTO;
-import com.benevolo.entity.EventEntity;
-import com.benevolo.repo.EventRepo;
 import com.benevolo.service.EventService;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
-import jakarta.ws.rs.core.Application;
 import jakarta.ws.rs.core.MediaType;
 
 import java.util.List;
-import java.util.Optional;
 
 @Path("/events")
 public class EventResource {
@@ -31,6 +27,7 @@ public class EventResource {
     @GET
     @Path("/{eventId}")
     @Produces(MediaType.APPLICATION_JSON)
+
     public EventDTO getById(@PathParam("eventId") String eventId) {
         return eventService.findById(eventId);
     }
