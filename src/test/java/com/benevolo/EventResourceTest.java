@@ -6,10 +6,14 @@ import com.benevolo.repo.EventRepo;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import io.quarkus.security.identity.SecurityIdentity;
+import io.quarkus.test.InjectMock;
 import io.quarkus.test.common.QuarkusTestResource;
 import io.quarkus.test.h2.H2DatabaseTestResource;
 import io.quarkus.test.junit.QuarkusTest;
+import io.quarkus.test.security.TestSecurity;
 import io.restassured.RestAssured;
+import io.restassured.http.ContentType;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.core.MediaType;
 import org.junit.jupiter.api.*;
@@ -35,6 +39,7 @@ public class EventResourceTest {
 
     @Test
     @Order(1)
+    @TestSecurity(user = "testUser", roles = {"admin", "user"})
     public void testCreateEvent() {
         EventDTO eventDTO = new EventDTO(EVENT_ID,
                 "TestEvent",
@@ -42,14 +47,21 @@ public class EventResourceTest {
                 LocalDateTime.of(2022, 5, 7, 18, 0),
                 new AddressDTO("addressid", "street1", "Ingolstadt", "Deutschland", "85049"),
                 "description");
-        RestAssured.given().body(eventDTO).contentType(MediaType.APPLICATION_JSON).when().post("/events");
-        Assertions.assertEquals(1, eventRepo.findAll().size());
+        //RestAssured.given().body(eventDTO).contentType(MediaType.APPLICATION_JSON).when().post("/events");
+        given().contentType(ContentType.JSON).
+                body(eventDTO).
+                when().
+                post("/events").
+                then().
+                statusCode(204);
     }
 
     @Test
     @Order(2)
+    @TestSecurity(user = "testUser", roles = {"admin", "user"})
     public void testGetAllEvents() throws Exception {
         String body = RestAssured.given().get("/events").getBody().asString();
+        System.out.println(eventRepo.findAll().size());
         List<EventDTO> events = new ObjectMapper().registerModule(new JavaTimeModule()).readValue(body, new TypeReference<>() {
         });
         Assertions.assertEquals(1, events.size());
@@ -57,6 +69,7 @@ public class EventResourceTest {
 
     @Test
     @Order(3)
+    @TestSecurity(user = "testUser", roles = {"admin", "user"})
     public void testGetEventById() throws Exception {
         given().pathParam("eventId", EVENT_ID).
                 when().

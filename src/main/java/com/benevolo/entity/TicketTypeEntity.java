@@ -9,10 +9,11 @@ import java.time.LocalDateTime;
 public class TicketTypeEntity {
     @Id
     private String id;
+    @Column(name = "ticket_type_name")
     private String name;
-    private double price;
+    private int price;
     @Column(name = "tax_rate")
-    private double taxRate;
+    private int taxRate;
     private int capacity;
     private boolean active;
     @Column(name = "valid_from")
@@ -26,7 +27,7 @@ public class TicketTypeEntity {
     public TicketTypeEntity() {
     }
 
-    public TicketTypeEntity(String id, String name, double price, double taxRate, int capacity, boolean active, LocalDateTime validFrom, LocalDateTime validTo) {
+    public TicketTypeEntity(String id, String name, int price, int taxRate, int capacity, boolean active, LocalDateTime validFrom, LocalDateTime validTo) {
         this.id = id;
         this.name = name;
         this.price = price;
@@ -54,19 +55,19 @@ public class TicketTypeEntity {
         this.name = name;
     }
 
-    public double getPrice() {
+    public int getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(int price) {
         this.price = price;
     }
 
-    public double getTaxRate() {
+    public int getTaxRate() {
         return taxRate;
     }
 
-    public void setTaxRate(double taxRate) {
+    public void setTaxRate(int taxRate) {
         this.taxRate = taxRate;
     }
 
