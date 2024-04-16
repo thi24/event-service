@@ -8,6 +8,7 @@ import com.benevolo.repo.TicketTypeRepo;
 import io.quarkus.test.common.QuarkusTestResource;
 import io.quarkus.test.h2.H2DatabaseTestResource;
 import io.quarkus.test.junit.QuarkusTest;
+import io.quarkus.test.security.TestSecurity;
 import io.restassured.http.ContentType;
 import jakarta.inject.Inject;
 import org.junit.jupiter.api.*;
@@ -37,6 +38,7 @@ public class TicketTypeRessourceTest {
 
     @Test
     @Order(1)
+    @TestSecurity(user = "testUser", roles = {"admin", "user"})
     public void createSampleEvent() {
         EventDTO eventDTO = new EventDTO(EVENT_ID, "nameTest2",
                 LocalDateTime.of(2024, 1, 12, 12, 0),
@@ -54,10 +56,11 @@ public class TicketTypeRessourceTest {
 
     @Test
     @Order(2)
+    @TestSecurity(user = "testUser", roles = {"admin", "user"})
     // Testing Save Method
     public void createSampleTicketType() {
-        TicketTypeDTO ticketTypeDTO = new TicketTypeDTO(TICKET_TYPE_ID, "testEvent", 50.00,
-                0.19, 1000, true,
+        TicketTypeDTO ticketTypeDTO = new TicketTypeDTO(TICKET_TYPE_ID, "testEvent", 5000,
+                19, 1000, true,
                 LocalDateTime.of(2024, 1, 12, 12, 0),
                 LocalDateTime.of(2024, 1, 14, 12, 0), EVENT_ID);
 
@@ -73,6 +76,7 @@ public class TicketTypeRessourceTest {
 
     @Test
     @Order(3)
+    @TestSecurity(user = "testUser", roles = {"admin", "user"})
     public void testGetByEventId() {
         given().queryParam("eventId", EVENT_ID).when().
                 get("/ticket-types").then().
@@ -82,6 +86,7 @@ public class TicketTypeRessourceTest {
     }
     @Test
     @Order(3)
+    @TestSecurity(user = "testUser", roles = {"admin", "user"})
     public void testGetById() {
         given().pathParam("ticketTypeId", TICKET_TYPE_ID).
                 when().
@@ -92,9 +97,10 @@ public class TicketTypeRessourceTest {
     }
     @Test
     @Order(4)
+    @TestSecurity(user = "testUser", roles = {"admin", "user"})
     public void testUpdate() {
-        TicketTypeDTO ticketTypeDTO = new TicketTypeDTO(TICKET_TYPE_ID, "testEventId", 50.00,
-                0.19, 2000, true,
+        TicketTypeDTO ticketTypeDTO = new TicketTypeDTO(TICKET_TYPE_ID, "testEventId", 5000,
+                19, 2000, true,
                 LocalDateTime.of(2024, 1, 12, 12, 0),
                 LocalDateTime.of(2024, 1, 14, 12, 0), EVENT_ID);
         // check if current capacity is 1000
@@ -120,6 +126,7 @@ public class TicketTypeRessourceTest {
     }
     @Test
     @Order(5)
+    @TestSecurity(user = "testUser", roles = {"admin", "user"})
     public void testDeleteById() {
         given().pathParam("ticketTypeId", TICKET_TYPE_ID).
                 when().

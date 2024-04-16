@@ -31,6 +31,8 @@ public class EventService {
 
     public void save(EventDTO eventDTO) {
         EventEntity eventEntity = EventMapper.map(eventDTO);
+        System.out.println(eventEntity.getId());
+        System.out.println(eventEntity.getAddress().getId());
         AddressEntity addressEntity = eventEntity.getAddress();
         if(eventEntity.getId() == null || eventEntity.getId().isBlank()) {
             eventEntity.setId(java.util.UUID.randomUUID().toString());
