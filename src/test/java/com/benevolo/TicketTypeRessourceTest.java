@@ -23,8 +23,8 @@ import static org.hamcrest.CoreMatchers.is;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class TicketTypeRessourceTest {
 
-    private static final String EVENT_ID = "eventid";
-    private static final String TICKET_TYPE_ID = "tickettypeid";
+    private String eventId = "";
+    private String ticketTypeId = "";
 
     private final EventRepo eventRepo;
     private final TicketTypeRepo ticketTypeRepo;
@@ -40,7 +40,7 @@ public class TicketTypeRessourceTest {
     @Order(1)
     @TestSecurity(user = "testUser", roles = {"admin", "user"})
     public void createSampleEvent() {
-        EventDTO eventDTO = new EventDTO(EVENT_ID, "nameTest2",
+        EventDTO eventDTO = new EventDTO("", "nameTest2",
                 LocalDateTime.of(2024, 1, 12, 12, 0),
                 LocalDateTime.of(2024, 1, 14, 12, 0),
                 new AddressDTO("addressid", "street1", "Ingolstadt", "Deutschland", "85049"),
@@ -59,10 +59,11 @@ public class TicketTypeRessourceTest {
     @TestSecurity(user = "testUser", roles = {"admin", "user"})
     // Testing Save Method
     public void createSampleTicketType() {
-        TicketTypeDTO ticketTypeDTO = new TicketTypeDTO(TICKET_TYPE_ID, "testEvent", 5000,
+        eventId = eventRepo.findAll().get(0).getId();
+        TicketTypeDTO ticketTypeDTO = new TicketTypeDTO("", "testEvent", 5000,
                 19, 1000, true,
                 LocalDateTime.of(2024, 1, 12, 12, 0),
-                LocalDateTime.of(2024, 1, 14, 12, 0), EVENT_ID);
+                LocalDateTime.of(2024, 1, 14, 12, 0), eventId);
 
         given().contentType(ContentType.JSON).
                 body(ticketTypeDTO).
@@ -71,6 +72,7 @@ public class TicketTypeRessourceTest {
                 then().
                 statusCode(204);
         System.out.println(ticketTypeRepo.findAll().size());
+        ticketTypeId = ticketTypeRepo.findAll().get(0).getId();
     }
 
 
@@ -78,33 +80,38 @@ public class TicketTypeRessourceTest {
     @Order(3)
     @TestSecurity(user = "testUser", roles = {"admin", "user"})
     public void testGetByEventId() {
-        given().queryParam("eventId", EVENT_ID).when().
+        eventId = eventRepo.findAll().get(0).getId();
+        given().queryParam("eventId", eventId).when().
                 get("/ticket-types").then().
                 statusCode(200).
                 body("$.size()", is(1)).
-                body("[0].eventId", is(EVENT_ID));
+                body("[0].eventId", is(eventId));
     }
     @Test
     @Order(3)
     @TestSecurity(user = "testUser", roles = {"admin", "user"})
     public void testGetById() {
-        given().pathParam("ticketTypeId", TICKET_TYPE_ID).
+        eventId = eventRepo.findAll().get(0).getId();
+        ticketTypeId = ticketTypeRepo.findAll().get(0).getId();
+        given().pathParam("ticketTypeId", ticketTypeId).
                 when().
                 get("/ticket-types/{ticketTypeId}").
                 then().
                 statusCode(200).
-                body("id", is(TICKET_TYPE_ID));
+                body("id", is(ticketTypeId));
     }
     @Test
     @Order(4)
     @TestSecurity(user = "testUser", roles = {"admin", "user"})
     public void testUpdate() {
-        TicketTypeDTO ticketTypeDTO = new TicketTypeDTO(TICKET_TYPE_ID, "testEventId", 5000,
+        eventId = eventRepo.findAll().get(0).getId();
+        ticketTypeId = ticketTypeRepo.findAll().get(0).getId();
+        TicketTypeDTO ticketTypeDTO = new TicketTypeDTO(ticketTypeId, "testEventId", 5000,
                 19, 2000, true,
                 LocalDateTime.of(2024, 1, 12, 12, 0),
-                LocalDateTime.of(2024, 1, 14, 12, 0), EVENT_ID);
+                LocalDateTime.of(2024, 1, 14, 12, 0), eventId);
         // check if current capacity is 1000
-        given().pathParam("ticketTypeId", TICKET_TYPE_ID).
+        given().pathParam("ticketTypeId", ticketTypeId).
                 when().
                 get("/ticket-types/{ticketTypeId}").
                 then().
@@ -112,12 +119,12 @@ public class TicketTypeRessourceTest {
                 body("capacity", is(1000));
         // update capacity to 2000
         given().contentType(ContentType.JSON).body(ticketTypeDTO).
-                pathParam("ticketTypeId", TICKET_TYPE_ID).
+                pathParam("ticketTypeId", ticketTypeId).
                 when().
                 put("/ticket-types/{ticketTypeId}").
                 then().statusCode(204);
         // check if capacity is updated
-        given().pathParam("ticketTypeId", TICKET_TYPE_ID).
+        given().pathParam("ticketTypeId", ticketTypeId).
                 when().
                 get("/ticket-types/{ticketTypeId}").
                 then().
@@ -128,13 +135,15 @@ public class TicketTypeRessourceTest {
     @Order(5)
     @TestSecurity(user = "testUser", roles = {"admin", "user"})
     public void testDeleteById() {
-        given().pathParam("ticketTypeId", TICKET_TYPE_ID).
+        eventId = eventRepo.findAll().get(0).getId();
+        ticketTypeId = ticketTypeRepo.findAll().get(0).getId();
+        given().pathParam("ticketTypeId", ticketTypeId).
                 when().
                 delete("/ticket-types/{ticketTypeId}").
                 then().
                 statusCode(204);
         // check if ticket type is deleted
-        given().pathParam("ticketTypeId", TICKET_TYPE_ID).
+        given().pathParam("ticketTypeId", ticketTypeId).
                 when().
                 get("/ticket-types/{ticketTypeId}").
                 then().

@@ -7,6 +7,7 @@ import com.benevolo.repo.EventRepo;
 import com.benevolo.repo.TicketTypeRepo;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.ws.rs.NotFoundException;
 import jakarta.ws.rs.WebApplicationException;
 
 import java.util.List;
@@ -44,10 +45,8 @@ public class TicketTypeService {
     }
     public void save(TicketTypeDTO ticketTypeDTO) {
         TicketTypeEntity ticketTypeEntity = TicketTypeMapper.map(ticketTypeDTO);
-        if(ticketTypeDTO.eventId() == null || ticketTypeDTO.eventId().isBlank()) {
-            ticketTypeEntity.setId(UUID.randomUUID().toString());
-        }
-        ticketTypeEntity.setEvent(eventRepo.findById(ticketTypeDTO.eventId()).orElseThrow());
+        ticketTypeEntity.setId(UUID.randomUUID().toString());
+        ticketTypeEntity.setEvent(eventRepo.findById(ticketTypeDTO.eventId()).orElseThrow(() -> new NotFoundException("Event not found")));
         ticketTypeRepo.save(ticketTypeEntity);
     }
 
