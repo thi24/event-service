@@ -8,7 +8,7 @@ import java.util.UUID;
 @Table(name = "address")
 public class AddressEntity {
     @Id
-    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
     @Column(name = "street")
@@ -27,7 +27,6 @@ public class AddressEntity {
     private EventEntity event;
 
     public AddressEntity(String street, String city, String state, String zip, EventEntity event) {
-        this.id = UUID.randomUUID().toString();
         this.street = street;
         this.city = city;
         this.state = state;

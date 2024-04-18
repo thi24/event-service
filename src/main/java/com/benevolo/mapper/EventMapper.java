@@ -36,4 +36,14 @@ public class EventMapper {
         );
     }
 
+    public static EventEntity mapWithoutID(EventDTO eventDTO) {
+        return new EventEntity(
+                eventDTO.eventName(),
+                eventDTO.startsAt(),
+                eventDTO.endsAt(),
+                AddressMapper.map(eventDTO.address()),
+                eventDTO.description()
+        );
+    }
+
 }

@@ -9,8 +9,8 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.WebApplicationException;
+
 import java.util.List;
-import java.util.UUID;
 
 @ApplicationScoped
 public class TicketTypeService {
@@ -44,8 +44,7 @@ public class TicketTypeService {
 
     @Transactional
     public void save(TicketTypeDTO ticketTypeDTO) {
-        TicketTypeEntity ticketTypeEntity = TicketTypeMapper.map(ticketTypeDTO);
-        ticketTypeEntity.setId(UUID.randomUUID().toString());
+        TicketTypeEntity ticketTypeEntity = TicketTypeMapper.mapWithOutID(ticketTypeDTO);
         ticketTypeEntity.setEvent(eventRepo.findById(ticketTypeDTO.eventId()));
         ticketTypeRepo.persist(ticketTypeEntity);
     }

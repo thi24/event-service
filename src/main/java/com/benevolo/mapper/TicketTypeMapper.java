@@ -30,4 +30,9 @@ public class TicketTypeMapper {
                 ticketTypeDTO.taxRate(), ticketTypeDTO.capacity(), ticketTypeDTO.active(), ticketTypeDTO.validFrom(),
                 ticketTypeDTO.validTo());
     }
+    public static TicketTypeEntity mapWithOutID(TicketTypeDTO ticketTypeDTO) {
+        return new TicketTypeEntity(ticketTypeDTO.name(), ticketTypeDTO.price(),
+                ticketTypeDTO.taxRate(), ticketTypeDTO.capacity(), ticketTypeDTO.active(), ticketTypeDTO.validFrom(),
+                ticketTypeDTO.validTo());
+    }
 }

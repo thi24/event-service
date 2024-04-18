@@ -29,11 +29,8 @@ public class EventService {
 
     @Transactional
     public void save(EventDTO eventDTO) {
-        EventEntity eventEntity = EventMapper.map(eventDTO);
+        EventEntity eventEntity = EventMapper.mapWithoutID(eventDTO);
         AddressEntity addressEntity = eventEntity.getAddress();
-        if (eventEntity.getId() == null || eventEntity.getId().isBlank()) {
-            eventEntity.setId(java.util.UUID.randomUUID().toString());
-        }
         addressRepo.persist(addressEntity);
         eventRepo.persist(eventEntity);
     }
