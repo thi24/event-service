@@ -8,10 +8,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      DATABASE_DEV_USERNAME: ${{ secrets.DATABASE_DEV_USERNAME }}
-      DATABASE_DEV_PASSWORD: ${{ secrets.DATABASE_DEV_PASSWORD }}
-      DATABASE_PROD_USERNAME: ${{ secrets.DATABASE_PROD_USERNAME }}
-      DATABASE_PROD_PASSWORD: ${{ secrets.DATABASE_PROD_PASSWORD }}
+      DATABASE_USERNAME: ${{ secrets.DATABASE_USERNAME }}
+      DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
       KEYCLOAK_SECRET: ${{ secrets.KEYCLOAK_SECRET }}
 
     steps:

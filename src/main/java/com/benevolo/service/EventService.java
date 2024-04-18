@@ -8,14 +8,12 @@ import com.benevolo.repo.AddressRepo;
 import com.benevolo.repo.EventRepo;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import jakarta.ws.rs.NotFoundException;
+import jakarta.transaction.Transactional;
 
 import java.util.List;
 
-
 @ApplicationScoped
 public class EventService {
-
     private final EventRepo eventRepo;
     private final AddressRepo addressRepo;
 
@@ -26,23 +24,22 @@ public class EventService {
     }
 
     public List<EventDTO> findAll() {
-        return EventMapper.map(eventRepo.findAll());
+        return EventMapper.map(eventRepo.findAll().stream().toList());
     }
 
+    @Transactional
     public void save(EventDTO eventDTO) {
         EventEntity eventEntity = EventMapper.map(eventDTO);
-        System.out.println(eventEntity.getId());
-        System.out.println(eventEntity.getAddress().getId());
         AddressEntity addressEntity = eventEntity.getAddress();
-        if(eventEntity.getId() == null || eventEntity.getId().isBlank()) {
+        if (eventEntity.getId() == null || eventEntity.getId().isBlank()) {
             eventEntity.setId(java.util.UUID.randomUUID().toString());
         }
-        addressRepo.save(addressEntity);
-        eventRepo.save(eventEntity);
+        addressRepo.persist(addressEntity);
+        eventRepo.persist(eventEntity);
     }
 
     public EventDTO findById(String eventId) {
-        return EventMapper.map(eventRepo.findById(eventId).orElseThrow(NotFoundException::new));
+        return EventMapper.map(eventRepo.findById(eventId));
     }
 
 }

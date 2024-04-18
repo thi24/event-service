@@ -11,7 +11,10 @@ import io.quarkus.test.junit.QuarkusTest;
 import io.quarkus.test.security.TestSecurity;
 import io.restassured.http.ContentType;
 import jakarta.inject.Inject;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 
 import java.time.LocalDateTime;
 
@@ -21,13 +24,12 @@ import static org.hamcrest.CoreMatchers.is;
 @QuarkusTest
 @QuarkusTestResource(H2DatabaseTestResource.class)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class TicketTypeRessourceTest {
-
-    private String eventId = "";
-    private String ticketTypeId = "";
+class TicketTypeRessourceTest {
 
     private final EventRepo eventRepo;
     private final TicketTypeRepo ticketTypeRepo;
+    private String eventId = "";
+    private String ticketTypeId = "";
 
     @Inject
     public TicketTypeRessourceTest(EventRepo eventRepo, TicketTypeRepo ticketTypeRepo) {
@@ -39,7 +41,7 @@ public class TicketTypeRessourceTest {
     @Test
     @Order(1)
     @TestSecurity(user = "testUser", roles = {"admin", "user"})
-    public void createSampleEvent() {
+    void createSampleEvent() {
         EventDTO eventDTO = new EventDTO("", "nameTest2",
                 LocalDateTime.of(2024, 1, 12, 12, 0),
                 LocalDateTime.of(2024, 1, 14, 12, 0),
@@ -57,9 +59,9 @@ public class TicketTypeRessourceTest {
     @Test
     @Order(2)
     @TestSecurity(user = "testUser", roles = {"admin", "user"})
-    // Testing Save Method
-    public void createSampleTicketType() {
-        eventId = eventRepo.findAll().get(0).getId();
+        // Testing Save Method
+    void createSampleTicketType() {
+        eventId = eventRepo.findAll().stream().toList().get(0).getId();
         TicketTypeDTO ticketTypeDTO = new TicketTypeDTO("", "testEvent", 5000,
                 19, 1000, true,
                 LocalDateTime.of(2024, 1, 12, 12, 0),
@@ -71,28 +73,27 @@ public class TicketTypeRessourceTest {
                 post("/ticket-types").
                 then().
                 statusCode(204);
-        System.out.println(ticketTypeRepo.findAll().size());
-        ticketTypeId = ticketTypeRepo.findAll().get(0).getId();
     }
 
 
     @Test
     @Order(3)
     @TestSecurity(user = "testUser", roles = {"admin", "user"})
-    public void testGetByEventId() {
-        eventId = eventRepo.findAll().get(0).getId();
+    void testGetByEventId() {
+        eventId = eventRepo.findAll().stream().toList().get(0).getId();
         given().queryParam("eventId", eventId).when().
                 get("/ticket-types").then().
                 statusCode(200).
                 body("$.size()", is(1)).
                 body("[0].eventId", is(eventId));
     }
+
     @Test
     @Order(3)
     @TestSecurity(user = "testUser", roles = {"admin", "user"})
-    public void testGetById() {
-        eventId = eventRepo.findAll().get(0).getId();
-        ticketTypeId = ticketTypeRepo.findAll().get(0).getId();
+    void testGetById() {
+        eventId = eventRepo.findAll().stream().toList().get(0).getId();
+        ticketTypeId = ticketTypeRepo.findAll().stream().toList().get(0).getId();
         given().pathParam("ticketTypeId", ticketTypeId).
                 when().
                 get("/ticket-types/{ticketTypeId}").
@@ -100,12 +101,13 @@ public class TicketTypeRessourceTest {
                 statusCode(200).
                 body("id", is(ticketTypeId));
     }
+
     @Test
     @Order(4)
     @TestSecurity(user = "testUser", roles = {"admin", "user"})
-    public void testUpdate() {
-        eventId = eventRepo.findAll().get(0).getId();
-        ticketTypeId = ticketTypeRepo.findAll().get(0).getId();
+    void testUpdate() {
+        eventId = eventRepo.findAll().stream().toList().get(0).getId();
+        ticketTypeId = ticketTypeRepo.findAll().stream().toList().get(0).getId();
         TicketTypeDTO ticketTypeDTO = new TicketTypeDTO(ticketTypeId, "testEventId", 5000,
                 19, 2000, true,
                 LocalDateTime.of(2024, 1, 12, 12, 0),
@@ -131,12 +133,13 @@ public class TicketTypeRessourceTest {
                 statusCode(200).
                 body("capacity", is(2000));
     }
+
     @Test
     @Order(5)
     @TestSecurity(user = "testUser", roles = {"admin", "user"})
-    public void testDeleteById() {
-        eventId = eventRepo.findAll().get(0).getId();
-        ticketTypeId = ticketTypeRepo.findAll().get(0).getId();
+    void testDeleteById() {
+        eventId = eventRepo.findAll().stream().toList().get(0).getId();
+        ticketTypeId = ticketTypeRepo.findAll().stream().toList().get(0).getId();
         given().pathParam("ticketTypeId", ticketTypeId).
                 when().
                 delete("/ticket-types/{ticketTypeId}").

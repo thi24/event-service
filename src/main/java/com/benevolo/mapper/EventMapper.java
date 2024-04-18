@@ -6,6 +6,9 @@ import com.benevolo.entity.EventEntity;
 import java.util.List;
 
 public class EventMapper {
+    private EventMapper() {
+        // private constructor
+    }
 
     public static List<EventDTO> map(List<EventEntity> events) {
         return events.stream().map(EventMapper::map).toList();

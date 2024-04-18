@@ -38,25 +38,3 @@ CREATE TABLE ticket_type
     CONSTRAINT pk_ticket_type PRIMARY KEY (id),
     CONSTRAINT fk_event FOREIGN KEY (event_id) REFERENCES event (id)
 );
-
-CREATE TABLE customer
-(
-    stripe_id     VARCHAR(256),
-    customer_name VARCHAR(256),
-    email         VARCHAR(256),
-    CONSTRAINT pk_customer PRIMARY KEY (stripe_id)
-);
-
-CREATE TABLE ticket
-(
-    id             VARCHAR(256),
-    status         VARCHAR(32),
-    price          INTEGER,
-    tax_rate       INTEGER,
-    customer_id    VARCHAR(256),
-    ticket_type_id VARCHAR(256),
-    CONSTRAINT pk_ticket PRIMARY KEY (id),
-    CONSTRAINT fk_customer FOREIGN KEY (customer_id) REFERENCES customer (stripe_id),
-    CONSTRAINT fk_ticket_type FOREIGN KEY (ticket_type_id) REFERENCES ticket_type (id)
-);
-

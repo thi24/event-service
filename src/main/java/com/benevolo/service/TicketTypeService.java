@@ -7,11 +7,9 @@ import com.benevolo.repo.EventRepo;
 import com.benevolo.repo.TicketTypeRepo;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import jakarta.ws.rs.NotFoundException;
+import jakarta.transaction.Transactional;
 import jakarta.ws.rs.WebApplicationException;
-
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @ApplicationScoped
@@ -26,32 +24,35 @@ public class TicketTypeService {
     }
 
     public List<TicketTypeDTO> getByEventId(String eventId) {
-        System.out.println("TicketTypeService.getByEventId");
-        System.out.println("eventId = [" + eventId + "]");
         List<TicketTypeEntity> ticketTypeEntities = ticketTypeRepo.findByEventId(eventId);
-        //System.out.println("ticketTypeEntities = " + ticketTypeEntities.get(0).getName());
+        if (ticketTypeEntities.isEmpty())
+            throw new WebApplicationException("No ticket types found for event with id: " + eventId, 404);
         return TicketTypeMapper.mapToDTO(ticketTypeEntities);
     }
+
     public TicketTypeDTO getById(String ticketTypeId) {
-        Optional<TicketTypeEntity> ticketTypeEntityOptional = ticketTypeRepo.findById(ticketTypeId);
-        if(ticketTypeEntityOptional.isEmpty()) {
-            throw new WebApplicationException("TicketType not found", 404);
-        }
-        return TicketTypeMapper.map(ticketTypeEntityOptional.get());
+        TicketTypeEntity ticketTypeEntity = ticketTypeRepo.findById(ticketTypeId);
+        if (ticketTypeEntity == null)
+            throw new WebApplicationException("No ticket type found for id: " + ticketTypeId, 404);
+        return TicketTypeMapper.map(ticketTypeRepo.findById(ticketTypeId));
     }
 
+    @Transactional
     public void deleteById(String ticketTypeId) {
         ticketTypeRepo.deleteById(ticketTypeId);
     }
+
+    @Transactional
     public void save(TicketTypeDTO ticketTypeDTO) {
         TicketTypeEntity ticketTypeEntity = TicketTypeMapper.map(ticketTypeDTO);
         ticketTypeEntity.setId(UUID.randomUUID().toString());
-        ticketTypeEntity.setEvent(eventRepo.findById(ticketTypeDTO.eventId()).orElseThrow(() -> new NotFoundException("Event not found")));
-        ticketTypeRepo.save(ticketTypeEntity);
+        ticketTypeEntity.setEvent(eventRepo.findById(ticketTypeDTO.eventId()));
+        ticketTypeRepo.persist(ticketTypeEntity);
     }
 
+    @Transactional
     public void update(String ticketTypeId, TicketTypeDTO ticketTypeDTO) {
-        TicketTypeEntity ticketTypeEntity = ticketTypeRepo.findById(ticketTypeId).orElseThrow();
+        TicketTypeEntity ticketTypeEntity = ticketTypeRepo.findById(ticketTypeId);
         ticketTypeEntity.setName(ticketTypeDTO.name());
         ticketTypeEntity.setActive(ticketTypeDTO.active());
         ticketTypeEntity.setCapacity(ticketTypeDTO.capacity());
@@ -59,7 +60,7 @@ public class TicketTypeService {
         ticketTypeEntity.setValidFrom(ticketTypeDTO.validFrom());
         ticketTypeEntity.setValidTo(ticketTypeDTO.validTo());
         ticketTypeEntity.setPrice(ticketTypeDTO.price());
-        ticketTypeRepo.save(ticketTypeEntity);
+        ticketTypeRepo.persist(ticketTypeEntity);
     }
 
 

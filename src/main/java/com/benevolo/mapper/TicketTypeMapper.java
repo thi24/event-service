@@ -1,8 +1,6 @@
 package com.benevolo.mapper;
 
-import com.benevolo.dto.EventDTO;
 import com.benevolo.dto.TicketTypeDTO;
-import com.benevolo.entity.EventEntity;
 import com.benevolo.entity.TicketTypeEntity;
 import jakarta.inject.Inject;
 
@@ -10,12 +8,14 @@ import java.util.List;
 
 public class TicketTypeMapper {
     @Inject
-    public TicketTypeMapper() {
+    private TicketTypeMapper() {
+        // private constructor
     }
 
     public static List<TicketTypeDTO> mapToDTO(List<TicketTypeEntity> ticketTypes) {
         return ticketTypes.stream().map(TicketTypeMapper::map).toList();
     }
+
     public static TicketTypeDTO map(TicketTypeEntity entity) {
         return new TicketTypeDTO(entity.getId(), entity.getName(), entity.getPrice(), entity.getTaxRate(),
                 entity.getCapacity(), entity.isActive(), entity.getValidFrom(), entity.getValidTo(), entity.getEvent().getId());

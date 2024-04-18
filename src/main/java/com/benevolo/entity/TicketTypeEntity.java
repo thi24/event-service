@@ -9,17 +9,22 @@ import java.time.LocalDateTime;
 public class TicketTypeEntity {
     @Id
     private String id;
+
     @Column(name = "ticket_type_name")
     private String name;
+
     private int price;
     @Column(name = "tax_rate")
     private int taxRate;
+
     private int capacity;
     private boolean active;
     @Column(name = "valid_from")
     private LocalDateTime validFrom;
+
     @Column(name = "valid_to")
     private LocalDateTime validTo;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "event_id")
     private EventEntity event;

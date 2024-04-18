@@ -10,7 +10,6 @@ import java.util.List;
 
 @Path("/events")
 public class EventResource {
-
     private final EventService eventService;
 
     @Inject
@@ -27,7 +26,6 @@ public class EventResource {
     @GET
     @Path("/{eventId}")
     @Produces(MediaType.APPLICATION_JSON)
-
     public EventDTO getById(@PathParam("eventId") String eventId) {
         return eventService.findById(eventId);
     }

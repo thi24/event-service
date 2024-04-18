@@ -10,14 +10,19 @@ public class AddressEntity {
     @Id
     @Column(name = "id")
     private String id;
+
     @Column(name = "street")
     private String street;
+
     @Column(name = "city")
     private String city;
+
     @Column(name = "state")
     private String state;
+
     @Column(name = "zip")
     private String zip;
+
     @OneToOne(mappedBy = "address", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private EventEntity event;
 
