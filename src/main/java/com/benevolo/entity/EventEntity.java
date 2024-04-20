@@ -31,24 +31,29 @@ public class EventEntity {
     @OneToMany(mappedBy = "event")
     private List<TicketTypeEntity> ticketTypes;
 
+    @Column(name = "picture")
+    private Byte[] picture;
+
     public EventEntity() {
     }
 
-    public EventEntity(String eventName, LocalDateTime startsAt, LocalDateTime endsAt, AddressEntity address, String description) {
+    public EventEntity(String eventName, LocalDateTime startsAt, LocalDateTime endsAt, AddressEntity address, String description, Byte[] picture) {
         this.eventName = eventName;
         this.startsAt = startsAt;
         this.endsAt = endsAt;
         this.address = address;
         this.description = description;
+        this.picture = picture;
     }
 
-    public EventEntity(String id, String eventName, LocalDateTime startsAt, LocalDateTime endsAt, AddressEntity address, String description) {
+    public EventEntity(String id, String eventName, LocalDateTime startsAt, LocalDateTime endsAt, AddressEntity address, String description, Byte[] picture) {
         this.id = id;
         this.eventName = eventName;
         this.startsAt = startsAt;
         this.endsAt = endsAt;
         this.address = address;
         this.description = description;
+        this.picture = picture;
     }
 
 
@@ -106,5 +111,13 @@ public class EventEntity {
 
     public void setTicketTypes(List<TicketTypeEntity> ticketTypes) {
         this.ticketTypes = ticketTypes;
+    }
+
+    public Byte[] getPicture() {
+        return picture;
+    }
+
+    public void setPicture(Byte[] picture) {
+        this.picture = picture;
     }
 }

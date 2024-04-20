@@ -21,7 +21,8 @@ public class EventMapper {
                 event.getStartsAt(),
                 event.getEndsAt(),
                 AddressMapper.map(event.getAddress()),
-                event.getDescription()
+                event.getDescription(),
+                event.getPicture()
         );
     }
 
@@ -32,7 +33,8 @@ public class EventMapper {
                 eventDTO.startsAt(),
                 eventDTO.endsAt(),
                 AddressMapper.map(eventDTO.address()),
-                eventDTO.description()
+                eventDTO.description(),
+                eventDTO.picture()
         );
     }
 
@@ -42,7 +44,8 @@ public class EventMapper {
                 eventDTO.startsAt(),
                 eventDTO.endsAt(),
                 AddressMapper.map(eventDTO.address()),
-                eventDTO.description()
+                eventDTO.description(),
+                eventDTO.picture()
         );
     }
 
