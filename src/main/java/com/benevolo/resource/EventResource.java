@@ -5,6 +5,9 @@ import com.benevolo.service.EventService;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
+import org.jboss.resteasy.reactive.PartType;
+import org.jboss.resteasy.reactive.RestForm;
+import org.jboss.resteasy.reactive.multipart.FileUpload;
 
 import java.io.InputStream;
 import java.util.List;
@@ -32,19 +35,9 @@ public class EventResource {
     }
 
     @POST
-    @Consumes(MediaType.MULTIPART_FORM_DATA)
-    @Produces
     public void post(
-            @FormParam("eventName") String eventName,
-            @FormParam("startsAt") String startsAt,
-            @FormParam("endsAt") String endsAt,
-            @FormParam("street") String street,
-            @FormParam("zip") String zip,
-            @FormParam("city") String city,
-            @FormParam("state") String state,
-            @FormParam("picture") InputStream picture, //Ändern zu InputStream
-            @FormParam("description") String description,
-    ) {
-        eventService.save(eventDTO);
+            @RestForm("image") @PartType(MediaType.APPLICATION_OCTET_STREAM) byte[] image,
+            @RestForm("event") @PartType(MediaType.APPLICATION_JSON) EventDTO eventDTO) {
+        eventService.save(eventDTO, image);
     }
 }

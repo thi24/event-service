@@ -32,28 +32,26 @@ public class EventEntity {
     private List<TicketTypeEntity> ticketTypes;
 
     @Column(name = "picture")
-    private Byte[] picture;
+    private byte[] picture;
 
     public EventEntity() {
     }
 
-    public EventEntity(String eventName, LocalDateTime startsAt, LocalDateTime endsAt, AddressEntity address, String description, Byte[] picture) {
+    public EventEntity(String eventName, LocalDateTime startsAt, LocalDateTime endsAt, AddressEntity address, String description) {
         this.eventName = eventName;
         this.startsAt = startsAt;
         this.endsAt = endsAt;
         this.address = address;
         this.description = description;
-        this.picture = picture;
     }
 
-    public EventEntity(String id, String eventName, LocalDateTime startsAt, LocalDateTime endsAt, AddressEntity address, String description, Byte[] picture) {
+    public EventEntity(String id, String eventName, LocalDateTime startsAt, LocalDateTime endsAt, AddressEntity address, String description) {
         this.id = id;
         this.eventName = eventName;
         this.startsAt = startsAt;
         this.endsAt = endsAt;
         this.address = address;
         this.description = description;
-        this.picture = picture;
     }
 
 
@@ -113,11 +111,11 @@ public class EventEntity {
         this.ticketTypes = ticketTypes;
     }
 
-    public Byte[] getPicture() {
+    public byte[] getPicture() {
         return picture;
     }
 
-    public void setPicture(Byte[] picture) {
+    public void setPicture(byte[] picture) {
         this.picture = picture;
     }
 }
