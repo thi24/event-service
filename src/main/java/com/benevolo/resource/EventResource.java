@@ -7,12 +7,8 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import org.jboss.resteasy.reactive.PartType;
 import org.jboss.resteasy.reactive.RestForm;
-import org.jboss.resteasy.reactive.multipart.FileUpload;
 
 import java.io.BufferedInputStream;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
 
 @Path("/events")
@@ -41,8 +37,14 @@ public class EventResource {
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     public void post(
             @RestForm("event") @PartType(MediaType.APPLICATION_JSON) EventDTO eventDTO,
-            @RestForm("image") @PartType(MediaType.APPLICATION_OCTET_STREAM) BufferedInputStream image) throws IOException {
+            @RestForm("image") @PartType(MediaType.APPLICATION_OCTET_STREAM) BufferedInputStream image) {
+        eventService.save(eventDTO, image);
+    }
 
-        eventService.save(eventDTO, image.readAllBytes());
+    @GET
+    @Path("/{eventId}/image")
+    @Produces(MediaType.APPLICATION_OCTET_STREAM)
+    public byte[] getImage(@PathParam("eventId") String eventId) {
+        return eventService.getPicture(eventId);
     }
 }

@@ -42,8 +42,8 @@ class EventResourceTest {
                 LocalDateTime.of(2022, 5, 7, 18, 0),
                 new AddressDTO("addressid", "street1", "Ingolstadt", "Deutschland", "85049"),
                 "description");
-        given().contentType(ContentType.JSON).
-                body(eventDTO).
+        given().contentType(ContentType.MULTIPART)
+                .multiPart("event", eventDTO, "application/json").
                 when().
                 post("/events").
                 then().
