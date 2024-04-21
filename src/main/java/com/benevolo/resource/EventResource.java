@@ -9,6 +9,9 @@ import org.jboss.resteasy.reactive.PartType;
 import org.jboss.resteasy.reactive.RestForm;
 import org.jboss.resteasy.reactive.multipart.FileUpload;
 
+import java.io.BufferedInputStream;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
@@ -35,9 +38,11 @@ public class EventResource {
     }
 
     @POST
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
     public void post(
-            @RestForm("image") @PartType(MediaType.APPLICATION_OCTET_STREAM) byte[] image,
-            @RestForm("event") @PartType(MediaType.APPLICATION_JSON) EventDTO eventDTO) {
-        eventService.save(eventDTO, image);
+            @RestForm("event") @PartType(MediaType.APPLICATION_JSON) EventDTO eventDTO,
+            @RestForm("image") @PartType(MediaType.APPLICATION_OCTET_STREAM) BufferedInputStream image) throws IOException {
+
+        eventService.save(eventDTO, image.readAllBytes());
     }
 }

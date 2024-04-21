@@ -9,9 +9,7 @@ import com.benevolo.repo.EventRepo;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
-import org.jboss.resteasy.reactive.multipart.FileUpload;
 
-import java.io.IOException;
 import java.util.List;
 
 @ApplicationScoped
