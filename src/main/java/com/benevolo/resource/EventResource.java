@@ -35,10 +35,11 @@ public class EventResource {
 
     @POST
     @Consumes(MediaType.MULTIPART_FORM_DATA)
-    public void post(
+    @Produces(MediaType.APPLICATION_JSON)
+    public EventDTO post(
             @RestForm("event") @PartType(MediaType.APPLICATION_JSON) EventDTO eventDTO,
             @RestForm("image") @PartType(MediaType.APPLICATION_OCTET_STREAM) BufferedInputStream image) {
-        eventService.save(eventDTO, image);
+        return eventService.save(eventDTO, image);
     }
 
     @GET

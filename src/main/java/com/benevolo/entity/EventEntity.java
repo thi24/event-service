@@ -31,6 +31,7 @@ public class EventEntity {
     @OneToMany(mappedBy = "event")
     private List<TicketTypeEntity> ticketTypes;
 
+    @Basic(fetch = FetchType.LAZY)
     @Column(name = "picture")
     private byte[] picture;
 

@@ -31,7 +31,7 @@ public class EventService {
     }
 
     @Transactional
-    public void save(EventDTO eventDTO, BufferedInputStream image) {
+    public EventDTO save(EventDTO eventDTO, BufferedInputStream image) {
         byte[] imageAsBytes = null;
         try {
             imageAsBytes = image.readAllBytes();
@@ -45,6 +45,7 @@ public class EventService {
         addressRepo.persist(addressEntity);
         eventEntity.setPicture(imageAsBytes);
         eventRepo.persist(eventEntity);
+        return EventMapper.map(eventEntity);
     }
 
     public EventDTO findById(String eventId) {
