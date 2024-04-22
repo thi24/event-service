@@ -31,6 +31,10 @@ public class EventEntity {
     @OneToMany(mappedBy = "event")
     private List<TicketTypeEntity> ticketTypes;
 
+    @Basic(fetch = FetchType.LAZY)
+    @Column(name = "picture")
+    private byte[] picture;
+
     public EventEntity() {
     }
 
@@ -106,5 +110,13 @@ public class EventEntity {
 
     public void setTicketTypes(List<TicketTypeEntity> ticketTypes) {
         this.ticketTypes = ticketTypes;
+    }
+
+    public byte[] getPicture() {
+        return picture;
+    }
+
+    public void setPicture(byte[] picture) {
+        this.picture = picture;
     }
 }

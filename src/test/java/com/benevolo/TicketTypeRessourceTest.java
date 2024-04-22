@@ -48,8 +48,8 @@ class TicketTypeRessourceTest {
                 new AddressDTO("addressid", "street1", "Ingolstadt", "Deutschland", "85049"),
                 "description");
         // set properties of eventDTO
-        given().contentType(ContentType.JSON).
-                body(eventDTO).
+        given().contentType(ContentType.MULTIPART)
+                .multiPart("event", eventDTO, "application/json").
                 when().
                 post("/events").
                 then().

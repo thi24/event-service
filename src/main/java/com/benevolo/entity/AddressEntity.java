@@ -2,8 +2,6 @@ package com.benevolo.entity;
 
 import jakarta.persistence.*;
 
-import java.util.UUID;
-
 @Entity
 @Table(name = "address")
 public class AddressEntity {
