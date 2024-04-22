@@ -17,6 +17,7 @@ CREATE TABLE event (
     starts_at TIMESTAMP,
     ends_at TIMESTAMP,
     description TEXT,
+    picture BYTEA DEFAULT NULL,
     address_id VARCHAR(255),
     CONSTRAINT pk_event PRIMARY KEY (id),
     CONSTRAINT fk_event_address FOREIGN KEY (address_id) REFERENCES address(id)
