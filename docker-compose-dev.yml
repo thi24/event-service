@@ -5,8 +5,8 @@ services:
       context: .
       dockerfile: dockerfile
       args:
-        - DATABASE_USERNAME=${DATABASE_DEV_USERNAME}
-        - DATABASE_PASSWORD=${DATABASE_DEV_PASSWORD}
+        - DATABASE_USERNAME=${DATABASE_USERNAME}
+        - DATABASE_PASSWORD=${DATABASE_PASSWORD}
         - KEYCLOAK_SECRET=${KEYCLOAK_SECRET}
     container_name: dev.benevolo.event-service
     image: ghcr.io/thi24/dev.benevolo.event-service:${GITHUB_RUN_ID}

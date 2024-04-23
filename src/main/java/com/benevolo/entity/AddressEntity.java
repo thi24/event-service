@@ -2,27 +2,29 @@ package com.benevolo.entity;
 
 import jakarta.persistence.*;
 
-import java.util.UUID;
-
 @Entity
 @Table(name = "address")
 public class AddressEntity {
     @Id
-    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
+
     @Column(name = "street")
     private String street;
+
     @Column(name = "city")
     private String city;
+
     @Column(name = "state")
     private String state;
+
     @Column(name = "zip")
     private String zip;
+
     @OneToOne(mappedBy = "address", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private EventEntity event;
 
     public AddressEntity(String street, String city, String state, String zip, EventEntity event) {
-        this.id = UUID.randomUUID().toString();
         this.street = street;
         this.city = city;
         this.state = state;

@@ -1,11 +1,11 @@
-FROM maven:3.8.3-openjdk-17 as build-stage
+FROM maven:3.9.6-amazoncorretto-21-debian as build-stage
 
 COPY src /home/app/src
 COPY pom.xml /home/app
 
 RUN mvn -f /home/app/pom.xml clean package
 
-FROM registry.access.redhat.com/ubi8/openjdk-17:1.16-2
+FROM registry.access.redhat.com/ubi8/openjdk-21:1.19-1
 ENV LANGUAGE='en_US:en'
 ARG DATABASE_USERNAME
 ARG DATABASE_PASSWORD

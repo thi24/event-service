@@ -8,14 +8,15 @@ import com.benevolo.repo.AddressRepo;
 import com.benevolo.repo.EventRepo;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import jakarta.ws.rs.NotFoundException;
+import jakarta.transaction.Transactional;
+import jakarta.ws.rs.WebApplicationException;
 
+import java.io.BufferedInputStream;
+import java.io.IOException;
 import java.util.List;
-
 
 @ApplicationScoped
 public class EventService {
-
     private final EventRepo eventRepo;
     private final AddressRepo addressRepo;
 
@@ -26,23 +27,32 @@ public class EventService {
     }
 
     public List<EventDTO> findAll() {
-        return EventMapper.map(eventRepo.findAll());
+        return EventMapper.map(eventRepo.findAll().stream().toList());
     }
 
-    public void save(EventDTO eventDTO) {
-        EventEntity eventEntity = EventMapper.map(eventDTO);
-        System.out.println(eventEntity.getId());
-        System.out.println(eventEntity.getAddress().getId());
-        AddressEntity addressEntity = eventEntity.getAddress();
-        if(eventEntity.getId() == null || eventEntity.getId().isBlank()) {
-            eventEntity.setId(java.util.UUID.randomUUID().toString());
+    @Transactional
+    public EventDTO save(EventDTO eventDTO, BufferedInputStream image) {
+        byte[] imageAsBytes = null;
+        try {
+            imageAsBytes = image.readAllBytes();
+        } catch (IOException e) {
+            // TODO: Handle exception
+        } catch (Exception e) {
+            // TODO: Handle exception
         }
-        addressRepo.save(addressEntity);
-        eventRepo.save(eventEntity);
+        EventEntity eventEntity = EventMapper.mapWithoutID(eventDTO);
+        AddressEntity addressEntity = eventEntity.getAddress();
+        addressRepo.persist(addressEntity);
+        eventEntity.setPicture(imageAsBytes);
+        eventRepo.persist(eventEntity);
+        return EventMapper.map(eventEntity);
     }
 
     public EventDTO findById(String eventId) {
-        return EventMapper.map(eventRepo.findById(eventId).orElseThrow(NotFoundException::new));
+        return EventMapper.map(eventRepo.findById(eventId));
     }
 
+    public byte[] getPicture(String eventId) {
+        return eventRepo.findById(eventId).getPicture();
+    }
 }

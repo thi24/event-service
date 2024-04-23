@@ -8,23 +8,39 @@ import java.time.LocalDateTime;
 @Table(name = "ticket_type")
 public class TicketTypeEntity {
     @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
+
     @Column(name = "ticket_type_name")
     private String name;
+
     private int price;
     @Column(name = "tax_rate")
     private int taxRate;
+
     private int capacity;
     private boolean active;
     @Column(name = "valid_from")
     private LocalDateTime validFrom;
+
     @Column(name = "valid_to")
     private LocalDateTime validTo;
-    @ManyToOne(fetch = FetchType.LAZY)
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "event_id")
     private EventEntity event;
 
     public TicketTypeEntity() {
+    }
+
+    public TicketTypeEntity(String name, int price, int taxRate, int capacity, boolean active, LocalDateTime validFrom, LocalDateTime validTo) {
+        this.name = name;
+        this.price = price;
+        this.taxRate = taxRate;
+        this.capacity = capacity;
+        this.active = active;
+        this.validFrom = validFrom;
+        this.validTo = validTo;
     }
 
     public TicketTypeEntity(String id, String name, int price, int taxRate, int capacity, boolean active, LocalDateTime validFrom, LocalDateTime validTo) {
@@ -37,7 +53,6 @@ public class TicketTypeEntity {
         this.validFrom = validFrom;
         this.validTo = validTo;
     }
-
 
     public String getId() {
         return id;

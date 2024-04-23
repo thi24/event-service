@@ -4,27 +4,36 @@ import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.UUID;
 
 @Entity
 @Table(name = "event")
 public class EventEntity {
-
     @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
+
     @Column(name = "event_name")
     private String eventName;
+
     @Column(name = "starts_at")
     private LocalDateTime startsAt;
+
     @Column(name = "ends_at")
     private LocalDateTime endsAt;
+
     @OneToOne()
     @JoinColumn(name = "address_id")
     private AddressEntity address;
+
     @Column(name = "description")
     private String description;
+
     @OneToMany(mappedBy = "event")
     private List<TicketTypeEntity> ticketTypes;
+
+    @Basic(fetch = FetchType.LAZY)
+    @Column(name = "picture")
+    private byte[] picture;
 
     public EventEntity() {
     }
@@ -101,5 +110,13 @@ public class EventEntity {
 
     public void setTicketTypes(List<TicketTypeEntity> ticketTypes) {
         this.ticketTypes = ticketTypes;
+    }
+
+    public byte[] getPicture() {
+        return picture;
+    }
+
+    public void setPicture(byte[] picture) {
+        this.picture = picture;
     }
 }

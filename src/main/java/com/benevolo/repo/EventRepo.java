@@ -1,7 +1,9 @@
 package com.benevolo.repo;
 
 import com.benevolo.entity.EventEntity;
-import org.springframework.data.jpa.repository.JpaRepository;
+import io.quarkus.hibernate.orm.panache.PanacheRepositoryBase;
+import jakarta.enterprise.context.ApplicationScoped;
 
-public interface EventRepo extends JpaRepository<EventEntity, String> {
+@ApplicationScoped
+public class EventRepo implements PanacheRepositoryBase<EventEntity, String> {
 }

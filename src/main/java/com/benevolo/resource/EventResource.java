@@ -5,12 +5,14 @@ import com.benevolo.service.EventService;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
+import org.jboss.resteasy.reactive.PartType;
+import org.jboss.resteasy.reactive.RestForm;
 
+import java.io.BufferedInputStream;
 import java.util.List;
 
 @Path("/events")
 public class EventResource {
-
     private final EventService eventService;
 
     @Inject
@@ -27,16 +29,23 @@ public class EventResource {
     @GET
     @Path("/{eventId}")
     @Produces(MediaType.APPLICATION_JSON)
-
     public EventDTO getById(@PathParam("eventId") String eventId) {
         return eventService.findById(eventId);
     }
 
     @POST
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces
-    public void post(EventDTO eventDTO) {
-        eventService.save(eventDTO);
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    @Produces(MediaType.APPLICATION_JSON)
+    public EventDTO post(
+            @RestForm("event") @PartType(MediaType.APPLICATION_JSON) EventDTO eventDTO,
+            @RestForm("image") @PartType(MediaType.APPLICATION_OCTET_STREAM) BufferedInputStream image) {
+        return eventService.save(eventDTO, image);
     }
 
+    @GET
+    @Path("/{eventId}/image")
+    @Produces(MediaType.APPLICATION_OCTET_STREAM)
+    public byte[] getImage(@PathParam("eventId") String eventId) {
+        return eventService.getPicture(eventId);
+    }
 }

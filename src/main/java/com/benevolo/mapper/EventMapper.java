@@ -6,6 +6,9 @@ import com.benevolo.entity.EventEntity;
 import java.util.List;
 
 public class EventMapper {
+    private EventMapper() {
+        // private constructor
+    }
 
     public static List<EventDTO> map(List<EventEntity> events) {
         return events.stream().map(EventMapper::map).toList();
@@ -25,6 +28,16 @@ public class EventMapper {
     public static EventEntity map(EventDTO eventDTO) {
         return new EventEntity(
                 eventDTO.id(),
+                eventDTO.eventName(),
+                eventDTO.startsAt(),
+                eventDTO.endsAt(),
+                AddressMapper.map(eventDTO.address()),
+                eventDTO.description()
+        );
+    }
+
+    public static EventEntity mapWithoutID(EventDTO eventDTO) {
+        return new EventEntity(
                 eventDTO.eventName(),
                 eventDTO.startsAt(),
                 eventDTO.endsAt(),

@@ -1,12 +1,13 @@
 package com.benevolo.repo;
 
 import com.benevolo.entity.TicketTypeEntity;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-
+import io.quarkus.hibernate.orm.panache.PanacheRepositoryBase;
+import jakarta.enterprise.context.ApplicationScoped;
 import java.util.List;
 
-public interface TicketTypeRepo extends JpaRepository<TicketTypeEntity, String> {
-    @Query("SELECT m FROM TicketTypeEntity AS m WHERE m.event.id = :eventId")
-    List<TicketTypeEntity> findByEventId(String eventId);
+@ApplicationScoped
+public class TicketTypeRepo implements PanacheRepositoryBase<TicketTypeEntity, String> {
+    public List<TicketTypeEntity> findByEventId(String eventId) {
+        return list("SELECT m FROM TicketTypeEntity AS m WHERE m.event.id = ?1", eventId);
+    }
 }
