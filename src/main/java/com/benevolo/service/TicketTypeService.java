@@ -43,10 +43,11 @@ public class TicketTypeService {
     }
 
     @Transactional
-    public void save(TicketTypeDTO ticketTypeDTO) {
+    public TicketTypeDTO save(TicketTypeDTO ticketTypeDTO) {
         TicketTypeEntity ticketTypeEntity = TicketTypeMapper.mapWithOutID(ticketTypeDTO);
         ticketTypeEntity.setEvent(eventRepo.findById(ticketTypeDTO.eventId()));
         ticketTypeRepo.persist(ticketTypeEntity);
+        return TicketTypeMapper.map(ticketTypeEntity);
     }
 
     @Transactional
