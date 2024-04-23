@@ -36,8 +36,9 @@ public class TicketTypeResource {
     }
 
     @POST
-    public void save(TicketTypeDTO ticketTypeDTO) {
-        ticketTypeService.save(ticketTypeDTO);
+    public TicketTypeDTO save(TicketTypeDTO ticketTypeDTO) {
+        return ticketTypeService.save(ticketTypeDTO);
+
     }
 
     @PUT

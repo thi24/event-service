@@ -72,7 +72,7 @@ class TicketTypeRessourceTest {
                 when().
                 post("/ticket-types").
                 then().
-                statusCode(204);
+                statusCode(200);
     }
 
 
