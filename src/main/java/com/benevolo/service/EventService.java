@@ -1,15 +1,12 @@
 package com.benevolo.service;
 
-import com.benevolo.dto.EventDTO;
 import com.benevolo.entity.AddressEntity;
 import com.benevolo.entity.EventEntity;
-import com.benevolo.mapper.EventMapper;
 import com.benevolo.repo.AddressRepo;
 import com.benevolo.repo.EventRepo;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
-import jakarta.ws.rs.WebApplicationException;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
@@ -26,12 +23,12 @@ public class EventService {
         this.addressRepo = addressRepo;
     }
 
-    public List<EventDTO> findAll() {
-        return EventMapper.map(eventRepo.findAll().stream().toList());
+    public List<EventEntity> findAll() {
+        return eventRepo.findAll().stream().toList();
     }
 
     @Transactional
-    public EventDTO save(EventDTO eventDTO, BufferedInputStream image) {
+    public EventEntity save(EventEntity eventEntity, BufferedInputStream image) {
         byte[] imageAsBytes = null;
         try {
             imageAsBytes = image.readAllBytes();
@@ -40,16 +37,15 @@ public class EventService {
         } catch (Exception e) {
             // TODO: Handle exception
         }
-        EventEntity eventEntity = EventMapper.mapWithoutID(eventDTO);
         AddressEntity addressEntity = eventEntity.getAddress();
         addressRepo.persist(addressEntity);
         eventEntity.setPicture(imageAsBytes);
         eventRepo.persist(eventEntity);
-        return EventMapper.map(eventEntity);
+        return eventEntity;
     }
 
-    public EventDTO findById(String eventId) {
-        return EventMapper.map(eventRepo.findById(eventId));
+    public EventEntity findById(String eventId) {
+        return eventRepo.findById(eventId);
     }
 
     public byte[] getPicture(String eventId) {

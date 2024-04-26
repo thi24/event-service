@@ -1,5 +1,6 @@
 package com.benevolo.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 @Entity
@@ -21,6 +22,7 @@ public class AddressEntity {
     @Column(name = "zip")
     private String zip;
 
+    @JsonBackReference
     @OneToOne(mappedBy = "address", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private EventEntity event;
 

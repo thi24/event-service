@@ -1,8 +1,8 @@
 package com.benevolo;
 
-import com.benevolo.dto.AddressDTO;
-import com.benevolo.dto.EventDTO;
-import com.benevolo.dto.TicketTypeDTO;
+import com.benevolo.entity.AddressEntity;
+import com.benevolo.entity.EventEntity;
+import com.benevolo.entity.TicketTypeEntity;
 import com.benevolo.repo.EventRepo;
 import com.benevolo.repo.TicketTypeRepo;
 import io.quarkus.test.common.QuarkusTestResource;
@@ -42,14 +42,14 @@ class TicketTypeRessourceTest {
     @Order(1)
     @TestSecurity(user = "testUser", roles = {"admin", "user"})
     void createSampleEvent() {
-        EventDTO eventDTO = new EventDTO("", "nameTest2",
+        EventEntity eventEntity = new EventEntity("nameTest2",
                 LocalDateTime.of(2024, 1, 12, 12, 0),
                 LocalDateTime.of(2024, 1, 14, 12, 0),
-                new AddressDTO("addressid", "street1", "Ingolstadt", "Deutschland", "85049"),
+                new AddressEntity("addressid", "street1", "Ingolstadt", "Deutschland", null),
                 "description");
         // set properties of eventDTO
         given().contentType(ContentType.MULTIPART)
-                .multiPart("event", eventDTO, "application/json").
+                .multiPart("event", eventEntity, "application/json").
                 when().
                 post("/events").
                 then().
@@ -62,17 +62,19 @@ class TicketTypeRessourceTest {
         // Testing Save Method
     void createSampleTicketType() {
         eventId = eventRepo.findAll().stream().toList().get(0).getId();
-        TicketTypeDTO ticketTypeDTO = new TicketTypeDTO("", "testEvent", 5000,
+        System.out.println(eventId);
+        TicketTypeEntity ticketTypeEntity = new TicketTypeEntity("testEvent", 5000,
                 19, 1000, true,
                 LocalDateTime.of(2024, 1, 12, 12, 0),
                 LocalDateTime.of(2024, 1, 14, 12, 0), eventId);
 
         given().contentType(ContentType.JSON).
-                body(ticketTypeDTO).
+                body(ticketTypeEntity).
                 when().
                 post("/ticket-types").
                 then().
                 statusCode(200);
+        System.out.println(ticketTypeRepo.findAll().stream().toList());
     }
 
 
@@ -81,12 +83,21 @@ class TicketTypeRessourceTest {
     @TestSecurity(user = "testUser", roles = {"admin", "user"})
     void testGetByEventId() {
         eventId = eventRepo.findAll().stream().toList().get(0).getId();
+        /*
+        String responseBody = given().queryParam("eventId", eventId).when().
+                get("/ticket-types").then().
+                statusCode(200).
+                extract().body().asString();
+        System.out.println(responseBody);
+        */
         given().queryParam("eventId", eventId).when().
                 get("/ticket-types").then().
                 statusCode(200).
                 body("$.size()", is(1)).
-                body("[0].eventId", is(eventId));
+                body("[0].event.id", is(eventId));
+
     }
+
 
     @Test
     @Order(3)
@@ -102,13 +113,14 @@ class TicketTypeRessourceTest {
                 body("id", is(ticketTypeId));
     }
 
+
     @Test
     @Order(4)
     @TestSecurity(user = "testUser", roles = {"admin", "user"})
     void testUpdate() {
         eventId = eventRepo.findAll().stream().toList().get(0).getId();
         ticketTypeId = ticketTypeRepo.findAll().stream().toList().get(0).getId();
-        TicketTypeDTO ticketTypeDTO = new TicketTypeDTO(ticketTypeId, "testEventId", 5000,
+        TicketTypeEntity ticketTypeEntity = new TicketTypeEntity(ticketTypeId, "testEventId", 5000,
                 19, 2000, true,
                 LocalDateTime.of(2024, 1, 12, 12, 0),
                 LocalDateTime.of(2024, 1, 14, 12, 0), eventId);
@@ -120,7 +132,7 @@ class TicketTypeRessourceTest {
                 statusCode(200).
                 body("capacity", is(1000));
         // update capacity to 2000
-        given().contentType(ContentType.JSON).body(ticketTypeDTO).
+        given().contentType(ContentType.JSON).body(ticketTypeEntity).
                 pathParam("ticketTypeId", ticketTypeId).
                 when().
                 put("/ticket-types/{ticketTypeId}").
