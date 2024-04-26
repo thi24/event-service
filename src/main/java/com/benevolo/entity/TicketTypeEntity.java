@@ -1,7 +1,6 @@
 package com.benevolo.entity;
 
 import jakarta.persistence.*;
-
 import java.time.LocalDateTime;
 
 @Entity
@@ -33,17 +32,7 @@ public class TicketTypeEntity {
     public TicketTypeEntity() {
     }
 
-    public TicketTypeEntity(String name, int price, int taxRate, int capacity, boolean active, LocalDateTime validFrom, LocalDateTime validTo) {
-        this.name = name;
-        this.price = price;
-        this.taxRate = taxRate;
-        this.capacity = capacity;
-        this.active = active;
-        this.validFrom = validFrom;
-        this.validTo = validTo;
-    }
-
-    public TicketTypeEntity(String id, String name, int price, int taxRate, int capacity, boolean active, LocalDateTime validFrom, LocalDateTime validTo) {
+    public TicketTypeEntity(String id, String name, int price, int taxRate, int capacity, boolean active, LocalDateTime validFrom, LocalDateTime validTo, String eventId) {
         this.id = id;
         this.name = name;
         this.price = price;
@@ -52,6 +41,18 @@ public class TicketTypeEntity {
         this.active = active;
         this.validFrom = validFrom;
         this.validTo = validTo;
+        this.event = new EventEntity(eventId);
+    }
+
+    public TicketTypeEntity(String name, int price, int taxRate, int capacity, boolean active, LocalDateTime validFrom, LocalDateTime validTo, String eventId) {
+        this.name = name;
+        this.price = price;
+        this.taxRate = taxRate;
+        this.capacity = capacity;
+        this.active = active;
+        this.validFrom = validFrom;
+        this.validTo = validTo;
+        this.event = new EventEntity(eventId);
     }
 
     public String getId() {

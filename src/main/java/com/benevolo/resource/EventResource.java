@@ -1,6 +1,6 @@
 package com.benevolo.resource;
 
-import com.benevolo.dto.EventDTO;
+import com.benevolo.entity.EventEntity;
 import com.benevolo.service.EventService;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
@@ -22,24 +22,24 @@ public class EventResource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<EventDTO> getAll() {
+    public List<EventEntity> getAll() {
         return eventService.findAll();
     }
 
     @GET
     @Path("/{eventId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public EventDTO getById(@PathParam("eventId") String eventId) {
+    public EventEntity getById(@PathParam("eventId") String eventId) {
         return eventService.findById(eventId);
     }
 
     @POST
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.APPLICATION_JSON)
-    public EventDTO post(
-            @RestForm("event") @PartType(MediaType.APPLICATION_JSON) EventDTO eventDTO,
+    public EventEntity post(
+            @RestForm("event") @PartType(MediaType.APPLICATION_JSON) EventEntity eventEntity,
             @RestForm("image") @PartType(MediaType.APPLICATION_OCTET_STREAM) BufferedInputStream image) {
-        return eventService.save(eventDTO, image);
+        return eventService.save(eventEntity, image);
     }
 
     @GET
