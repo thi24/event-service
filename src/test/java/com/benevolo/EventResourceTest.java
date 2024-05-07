@@ -4,7 +4,6 @@ import com.benevolo.entity.AddressEntity;
 import com.benevolo.entity.EventEntity;
 import com.benevolo.repo.EventRepo;
 import io.quarkus.test.common.QuarkusTestResource;
-import io.quarkus.test.h2.H2DatabaseTestResource;
 import io.quarkus.test.junit.QuarkusTest;
 import io.quarkus.test.security.TestSecurity;
 import io.restassured.http.ContentType;
@@ -20,7 +19,6 @@ import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.is;
 
 @QuarkusTest
-@QuarkusTestResource(H2DatabaseTestResource.class)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class EventResourceTest {
 
