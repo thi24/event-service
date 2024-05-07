@@ -1,6 +1,6 @@
 package com.benevolo.resource;
 
-import com.benevolo.dto.TicketTypeDTO;
+import com.benevolo.entity.TicketTypeEntity;
 import com.benevolo.service.TicketTypeService;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
@@ -19,13 +19,13 @@ public class TicketTypeResource {
     }
 
     @GET
-    public List<TicketTypeDTO> getByEventId(@RestQuery("eventId") String eventId) {
+    public List<TicketTypeEntity> getByEventId(@RestQuery("eventId") String eventId) {
         return ticketTypeService.getByEventId(eventId);
     }
 
     @GET
     @Path("/{ticketTypeId}")
-    public TicketTypeDTO getById(@PathParam("ticketTypeId") String ticketTypeId) {
+    public TicketTypeEntity getById(@PathParam("ticketTypeId") String ticketTypeId) {
         return ticketTypeService.getById(ticketTypeId);
     }
 
@@ -36,13 +36,14 @@ public class TicketTypeResource {
     }
 
     @POST
-    public void save(TicketTypeDTO ticketTypeDTO) {
-        ticketTypeService.save(ticketTypeDTO);
+    public TicketTypeEntity save(TicketTypeEntity ticketTypeEntity) {
+        return ticketTypeService.save(ticketTypeEntity);
+
     }
 
     @PUT
     @Path("/{ticketTypeId}")
-    public void update(@RestPath String ticketTypeId, TicketTypeDTO ticketTypeDTO) {
-        ticketTypeService.update(ticketTypeId, ticketTypeDTO);
+    public void update(@RestPath String ticketTypeId, TicketTypeEntity ticketTypeEntity) {
+        ticketTypeService.update(ticketTypeId, ticketTypeEntity);
     }
 }

@@ -8,6 +8,7 @@ services:
         - DATABASE_USERNAME=${DATABASE_USERNAME}
         - DATABASE_PASSWORD=${DATABASE_PASSWORD}
         - KEYCLOAK_SECRET=${KEYCLOAK_SECRET}
+        - CORS_ORIGIN=${CORS_ORIGIN}
     container_name: dev.benevolo.event-service
     image: ghcr.io/thi24/dev.benevolo.event-service:${GITHUB_RUN_ID}
     environment:

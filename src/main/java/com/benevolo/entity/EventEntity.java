@@ -1,5 +1,8 @@
 package com.benevolo.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -23,19 +26,26 @@ public class EventEntity {
 
     @OneToOne()
     @JoinColumn(name = "address_id")
+    @JsonManagedReference
     private AddressEntity address;
 
     @Column(name = "description")
     private String description;
 
     @OneToMany(mappedBy = "event")
+    @JsonBackReference
     private List<TicketTypeEntity> ticketTypes;
 
     @Basic(fetch = FetchType.LAZY)
     @Column(name = "picture")
+    @JsonIgnore
     private byte[] picture;
 
     public EventEntity() {
+    }
+
+    public EventEntity(String eventId) {
+        this.id = eventId;
     }
 
     public EventEntity(String eventName, LocalDateTime startsAt, LocalDateTime endsAt, AddressEntity address, String description) {
