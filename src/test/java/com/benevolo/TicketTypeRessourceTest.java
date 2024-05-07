@@ -91,7 +91,7 @@ class TicketTypeRessourceTest {
         given().queryParam("eventId", eventId).when().
                 get("/ticket-types").then().
                 statusCode(200).
-                body("$.size()", is(1)).
+                body("$.size()", is(3)).
                 body("[0].event.id", is(eventId));
 
     }
@@ -128,7 +128,7 @@ class TicketTypeRessourceTest {
                 get("/ticket-types/{ticketTypeId}").
                 then().
                 statusCode(200).
-                body("capacity", is(1000));
+                body("capacity", is(200));
         // update capacity to 2000
         given().contentType(ContentType.JSON).body(ticketTypeEntity).
                 pathParam("ticketTypeId", ticketTypeId).

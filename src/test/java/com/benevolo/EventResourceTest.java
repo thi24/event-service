@@ -42,7 +42,7 @@ class EventResourceTest {
     @Order(2)
     @TestSecurity(user = "testUser", roles = {"admin", "user"})
     void testGetAllEvents() {
-        given().get("/events").then().statusCode(200).body("size()", is(1));
+        given().get("/events").then().statusCode(200).body("size()", is(2));
     }
 
     @Test
