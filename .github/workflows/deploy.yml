@@ -26,12 +26,14 @@ jobs:
     - name: Build and push prod Docker image
       if: github.ref == 'refs/heads/main'
       run: |
+        echo "CORS_ORIGIN=https://benevolo.de" >> $GITHUB_ENV
         docker compose build
         docker compose push
 
     - name: Build and push dev Docker image
       if: github.ref == 'refs/heads/develop'
       run: |
+        echo "CORS_ORIGIN=,https://dev.benevolo.de, https://localhost:3000" >> $GITHUB_ENV
         docker compose -f docker-compose-dev.yml build
         docker compose -f docker-compose-dev.yml push
 
