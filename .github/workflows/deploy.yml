@@ -11,7 +11,7 @@ jobs:
       DATABASE_USERNAME: ${{ secrets.DATABASE_USERNAME }}
       DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
       KEYCLOAK_SECRET: ${{ secrets.KEYCLOAK_SECRET }}
-      CORS_ORIGIN: "https://benevolo.de,https://dev.benevolo.de, https://localhost:3000"
+      CORS_ORIGIN: "https://benevolo.de,https://dev.benevolo.de, https://localhost:3000, https://shop.benevolo.de"
 
     steps:
     - name: Checkout
