@@ -33,6 +33,20 @@ public class EventResource {
         return eventService.findById(eventId);
     }
 
+    @GET
+    @Path("/public")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<EventEntity> getAllPublic() {
+        return eventService.findAll();
+    }
+
+    @GET
+    @Path("/public/{eventId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public EventEntity getByIdPublic(@PathParam("eventId") String eventId) {
+        return eventService.findById(eventId);
+    }
+
     @POST
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.APPLICATION_JSON)
