@@ -24,6 +24,12 @@ public class TicketTypeResource {
     }
 
     @GET
+    @Path("/public")
+    public List<TicketTypeEntity> getByEventIdPublic(@RestQuery("eventId") String eventId) {
+        return ticketTypeService.getByEventId(eventId);
+    }
+
+    @GET
     @Path("/{ticketTypeId}")
     public TicketTypeEntity getById(@PathParam("ticketTypeId") String ticketTypeId) {
         return ticketTypeService.getById(ticketTypeId);
