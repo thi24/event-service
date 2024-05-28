@@ -30,7 +30,7 @@ public class TicketTypeResource {
     }
 
     @GET
-    @Path("/valid")
+    @Path("/public/valid")
     public List<TicketTypeEntity> getValidByEventIdPublic(@RestQuery("eventId") String eventId) {
         return ticketTypeService.getValidByEventId(eventId);
     }
