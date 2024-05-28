@@ -82,7 +82,7 @@ jobs:
       run: |
         wget https://github.com/mikefarah/yq/releases/download/v4.42.1/yq_linux_amd64 -O yq &&\
         chmod +x yq
-        NEW_VERSION=${GITHUB_RUN_ID}
+        NEW_VERSION=${{ github.sha }}
         yq e '.services["benevolo.event-service"].image = "ghcr.io/thi24/benevolo.event-service:'"$NEW_VERSION"'"' -i docker-compose.yml
 
     - name: Commit and push changes
