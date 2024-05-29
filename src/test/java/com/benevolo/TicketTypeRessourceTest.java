@@ -81,13 +81,6 @@ class TicketTypeRessourceTest {
     @TestSecurity(user = "testUser", roles = {"admin", "user"})
     void testGetByEventId() {
         eventId = eventRepo.findAll().stream().toList().get(0).getId();
-        /*
-        String responseBody = given().queryParam("eventId", eventId).when().
-                get("/ticket-types").then().
-                statusCode(200).
-                extract().body().asString();
-        System.out.println(responseBody);
-        */
         given().queryParam("eventId", eventId).when().
                 get("/ticket-types").then().
                 statusCode(200).

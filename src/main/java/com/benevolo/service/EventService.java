@@ -7,9 +7,9 @@ import com.benevolo.repo.EventRepo;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
+import jakarta.ws.rs.WebApplicationException;
 
 import java.io.BufferedInputStream;
-import java.io.IOException;
 import java.util.List;
 
 @ApplicationScoped
@@ -30,12 +30,12 @@ public class EventService {
     @Transactional
     public EventEntity save(EventEntity eventEntity, BufferedInputStream image) {
         byte[] imageAsBytes = null;
-        try {
-            imageAsBytes = image.readAllBytes();
-        } catch (IOException e) {
-            // TODO: Handle exception
-        } catch (Exception e) {
-            // TODO: Handle exception
+        if(image != null) {
+            try {
+                imageAsBytes = image.readAllBytes();
+            } catch (Exception e) {
+                throw new WebApplicationException("Error reading image", 500);
+            }
         }
         AddressEntity addressEntity = eventEntity.getAddress();
         addressRepo.persist(addressEntity);
