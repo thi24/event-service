@@ -62,4 +62,11 @@ public class EventResource {
     public byte[] getImage(@PathParam("eventId") String eventId) {
         return eventService.getPicture(eventId);
     }
+
+    @GET
+    @Path("/public/{eventId}/image")
+    @Produces(MediaType.APPLICATION_OCTET_STREAM)
+    public byte[] getImagePublic(@PathParam("eventId") String eventId) {
+        return eventService.getPicture(eventId);
+    }
 }

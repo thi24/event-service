@@ -9,6 +9,7 @@ import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.WebApplicationException;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @ApplicationScoped
@@ -26,6 +27,20 @@ public class TicketTypeService {
         List<TicketTypeEntity> ticketTypeEntities = ticketTypeRepo.findByEventId(eventId);
         if (ticketTypeEntities.isEmpty())
             throw new WebApplicationException("No ticket types found for event with id: " + eventId, 404);
+        return ticketTypeEntities;
+    }
+
+    public List<TicketTypeEntity> getValidByEventId(String eventId) {
+        List<TicketTypeEntity> ticketTypeEntities = ticketTypeRepo.findByEventId(eventId);
+        if (ticketTypeEntities.isEmpty()){
+            throw new WebApplicationException("No ticket types found for event with id: " + eventId, 404);
+        }
+        LocalDateTime dateNow = LocalDateTime.now();
+        for (TicketTypeEntity ticketTypeEntity : ticketTypeEntities) {
+            if(dateNow.isAfter(ticketTypeEntity.getValidTo()) || dateNow.isBefore(ticketTypeEntity.getValidFrom()) || !ticketTypeEntity.isActive()){
+                ticketTypeEntities.remove(ticketTypeEntity);
+            }
+        }
         return ticketTypeEntities;
     }
 

@@ -65,7 +65,6 @@ public class EventEntity {
         this.description = description;
     }
 
-
     public String getId() {
         return id;
     }
