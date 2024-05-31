@@ -2,7 +2,9 @@ package com.benevolo;
 
 import com.benevolo.entity.AddressEntity;
 import com.benevolo.entity.EventEntity;
+import com.benevolo.mocks.ProcessEngineMock;
 import com.benevolo.repo.EventRepo;
+import io.quarkus.test.common.QuarkusTestResource;
 import io.quarkus.test.junit.QuarkusTest;
 import io.quarkus.test.security.TestSecurity;
 import io.restassured.http.ContentType;
@@ -20,6 +22,8 @@ import static org.hamcrest.CoreMatchers.is;
 
 @QuarkusTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+@QuarkusTestResource(ProcessEngineMock.class)
+@TestSecurity(authorizationEnabled = false)
 class EventResourceTest {
 
     private final EventRepo eventRepo;
