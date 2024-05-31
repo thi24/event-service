@@ -1,5 +1,6 @@
 package com.benevolo.service;
 
+import com.benevolo.client.ProcessEngineClient;
 import com.benevolo.entity.AddressEntity;
 import com.benevolo.entity.EventEntity;
 import com.benevolo.repo.AddressRepo;
@@ -8,20 +9,22 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.WebApplicationException;
+import org.eclipse.microprofile.rest.client.inject.RestClient;
 
 import java.io.BufferedInputStream;
 import java.util.List;
 
 @ApplicationScoped
 public class EventService {
-    private final EventRepo eventRepo;
-    private final AddressRepo addressRepo;
 
     @Inject
-    public EventService(EventRepo eventRepo, AddressRepo addressRepo) {
-        this.eventRepo = eventRepo;
-        this.addressRepo = addressRepo;
-    }
+    EventRepo eventRepo;
+
+    @Inject
+    AddressRepo addressRepo;
+
+    @RestClient
+    private ProcessEngineClient processEngineClient;
 
     public List<EventEntity> findAll() {
         return eventRepo.findAll().stream().toList();
@@ -30,7 +33,7 @@ public class EventService {
     @Transactional
     public EventEntity save(EventEntity eventEntity, BufferedInputStream image) {
         byte[] imageAsBytes = null;
-        if(image != null) {
+        if (image != null) {
             try {
                 imageAsBytes = image.readAllBytes();
             } catch (Exception e) {
@@ -41,6 +44,8 @@ public class EventService {
         addressRepo.persist(addressEntity);
         eventEntity.setPicture(imageAsBytes);
         eventRepo.persist(eventEntity);
+        // Start Process for Reminder on process engine
+        processEngineClient.startEventReminderProcess();
         return eventEntity;
     }
 

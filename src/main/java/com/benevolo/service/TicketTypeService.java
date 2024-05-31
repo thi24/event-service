@@ -14,14 +14,12 @@ import java.util.List;
 
 @ApplicationScoped
 public class TicketTypeService {
-    private final TicketTypeRepo ticketTypeRepo;
-    private final EventRepo eventRepo;
 
     @Inject
-    public TicketTypeService(TicketTypeRepo ticketTypeRepo, EventRepo eventRepo) {
-        this.ticketTypeRepo = ticketTypeRepo;
-        this.eventRepo = eventRepo;
-    }
+    TicketTypeRepo ticketTypeRepo;
+
+    @Inject
+    EventRepo eventRepo;
 
     public List<TicketTypeEntity> getByEventId(String eventId) {
         List<TicketTypeEntity> ticketTypeEntities = ticketTypeRepo.findByEventId(eventId);
@@ -32,12 +30,12 @@ public class TicketTypeService {
 
     public List<TicketTypeEntity> getValidByEventId(String eventId) {
         List<TicketTypeEntity> ticketTypeEntities = ticketTypeRepo.findByEventId(eventId);
-        if (ticketTypeEntities.isEmpty()){
+        if (ticketTypeEntities.isEmpty()) {
             throw new WebApplicationException("No ticket types found for event with id: " + eventId, 404);
         }
         LocalDateTime dateNow = LocalDateTime.now();
         for (TicketTypeEntity ticketTypeEntity : ticketTypeEntities) {
-            if(dateNow.isAfter(ticketTypeEntity.getValidTo()) || dateNow.isBefore(ticketTypeEntity.getValidFrom()) || !ticketTypeEntity.isActive()){
+            if (dateNow.isAfter(ticketTypeEntity.getValidTo()) || dateNow.isBefore(ticketTypeEntity.getValidFrom()) || !ticketTypeEntity.isActive()) {
                 ticketTypeEntities.remove(ticketTypeEntity);
             }
         }

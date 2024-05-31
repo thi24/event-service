@@ -13,12 +13,9 @@ import java.util.List;
 
 @Path("/events")
 public class EventResource {
-    private final EventService eventService;
 
     @Inject
-    public EventResource(EventService eventService) {
-        this.eventService = eventService;
-    }
+    EventService eventService;
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -50,7 +47,7 @@ public class EventResource {
     @POST
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.APPLICATION_JSON)
-    public EventEntity post(
+    public EventEntity createEvent(
             @RestForm("event") @PartType(MediaType.APPLICATION_JSON) EventEntity eventEntity,
             @RestForm("image") @PartType(MediaType.APPLICATION_OCTET_STREAM) BufferedInputStream image) {
         return eventService.save(eventEntity, image);
