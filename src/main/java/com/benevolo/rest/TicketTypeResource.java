@@ -1,4 +1,4 @@
-package com.benevolo.resource;
+package com.benevolo.rest;
 
 import com.benevolo.entity.TicketTypeEntity;
 import com.benevolo.service.TicketTypeService;
@@ -55,7 +55,7 @@ public class TicketTypeResource {
 
     @PUT
     @Path("/{ticketTypeId}")
-    public void update(@RestPath String ticketTypeId, TicketTypeEntity ticketTypeEntity) {
+    public void update(@PathParam("ticketTypeId") String ticketTypeId, TicketTypeEntity ticketTypeEntity) {
         ticketTypeService.update(ticketTypeId, ticketTypeEntity);
     }
 }

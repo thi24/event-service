@@ -1,4 +1,4 @@
-package com.benevolo.resource;
+package com.benevolo.rest;
 
 import com.benevolo.entity.EventEntity;
 import com.benevolo.service.EventService;
