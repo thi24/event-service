@@ -30,9 +30,7 @@ public class ProcessEngineMock implements QuarkusTestResourceLifecycleManager {
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
-
-        wireMockServer.stubFor(get(urlMatching(".*")).atPriority(10).willReturn(aResponse().proxiedFrom("https://stage.code.quarkus.io/api")));
-
+        
         return Map.of("quarkus.rest-client.process-engine.url", wireMockServer.baseUrl());
     }
 
