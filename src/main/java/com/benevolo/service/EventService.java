@@ -1,5 +1,6 @@
 package com.benevolo.service;
 
+import com.benevolo.client.ProcessEngineClient;
 import com.benevolo.entity.AddressEntity;
 import com.benevolo.entity.EventEntity;
 import com.benevolo.repo.AddressRepo;
@@ -7,21 +8,23 @@ import com.benevolo.repo.EventRepo;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
+import jakarta.ws.rs.WebApplicationException;
+import org.eclipse.microprofile.rest.client.inject.RestClient;
 
 import java.io.BufferedInputStream;
-import java.io.IOException;
 import java.util.List;
 
 @ApplicationScoped
 public class EventService {
-    private final EventRepo eventRepo;
-    private final AddressRepo addressRepo;
 
     @Inject
-    public EventService(EventRepo eventRepo, AddressRepo addressRepo) {
-        this.eventRepo = eventRepo;
-        this.addressRepo = addressRepo;
-    }
+    EventRepo eventRepo;
+
+    @Inject
+    AddressRepo addressRepo;
+
+    @RestClient
+    private ProcessEngineClient processEngineClient;
 
     public List<EventEntity> findAll() {
         return eventRepo.findAll().stream().toList();
@@ -30,17 +33,19 @@ public class EventService {
     @Transactional
     public EventEntity save(EventEntity eventEntity, BufferedInputStream image) {
         byte[] imageAsBytes = null;
-        try {
-            imageAsBytes = image.readAllBytes();
-        } catch (IOException e) {
-            // TODO: Handle exception
-        } catch (Exception e) {
-            // TODO: Handle exception
+        if (image != null) {
+            try {
+                imageAsBytes = image.readAllBytes();
+            } catch (Exception e) {
+                throw new WebApplicationException("Error reading image", 500);
+            }
         }
         AddressEntity addressEntity = eventEntity.getAddress();
         addressRepo.persist(addressEntity);
         eventEntity.setPicture(imageAsBytes);
         eventRepo.persist(eventEntity);
+        // Start Process for Reminder on process engine
+        processEngineClient.startEventReminderProcess();
         return eventEntity;
     }
 

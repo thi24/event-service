@@ -1,22 +1,18 @@
-package com.benevolo.resource;
+package com.benevolo.rest;
 
 import com.benevolo.entity.TicketTypeEntity;
 import com.benevolo.service.TicketTypeService;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
-import org.jboss.resteasy.reactive.RestPath;
 import org.jboss.resteasy.reactive.RestQuery;
 
 import java.util.List;
 
 @Path("/ticket-types")
 public class TicketTypeResource {
-    private final TicketTypeService ticketTypeService;
 
     @Inject
-    public TicketTypeResource(TicketTypeService ticketTypeService) {
-        this.ticketTypeService = ticketTypeService;
-    }
+    TicketTypeService ticketTypeService;
 
     @GET
     public List<TicketTypeEntity> getByEventId(@RestQuery("eventId") String eventId) {
@@ -55,7 +51,7 @@ public class TicketTypeResource {
 
     @PUT
     @Path("/{ticketTypeId}")
-    public void update(@RestPath String ticketTypeId, TicketTypeEntity ticketTypeEntity) {
+    public void update(@PathParam("ticketTypeId") String ticketTypeId, TicketTypeEntity ticketTypeEntity) {
         ticketTypeService.update(ticketTypeId, ticketTypeEntity);
     }
 }

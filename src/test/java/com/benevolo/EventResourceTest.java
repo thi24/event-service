@@ -2,6 +2,7 @@ package com.benevolo;
 
 import com.benevolo.entity.AddressEntity;
 import com.benevolo.entity.EventEntity;
+import com.benevolo.mocks.ProcessEngineMock;
 import com.benevolo.repo.EventRepo;
 import io.quarkus.test.common.QuarkusTestResource;
 import io.quarkus.test.junit.QuarkusTest;
@@ -16,10 +17,13 @@ import org.junit.jupiter.api.TestMethodOrder;
 import java.time.LocalDateTime;
 
 import static io.restassured.RestAssured.given;
+import static io.restassured.RestAssured.when;
 import static org.hamcrest.CoreMatchers.is;
 
 @QuarkusTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+@QuarkusTestResource(ProcessEngineMock.class)
+@TestSecurity(authorizationEnabled = false)
 class EventResourceTest {
 
     private final EventRepo eventRepo;
@@ -35,14 +39,23 @@ class EventResourceTest {
     @TestSecurity(user = "testUser", roles = {"admin", "user"})
     void testCreateEvent() {
         EventEntity eventEntity = new EventEntity("TestEvent", LocalDateTime.of(2022, 5, 6, 10, 0), LocalDateTime.of(2022, 5, 7, 18, 0), new AddressEntity("addressid", "street1", "Ingolstadt", "Deutschland", null), "description");
-        given().contentType(ContentType.MULTIPART).multiPart("event", eventEntity, "application/json").when().post("/events").then().statusCode(200);
+        given().contentType(ContentType.MULTIPART).
+                multiPart("event", eventEntity, "application/json")
+                .when().
+                post("/events").
+                then().
+                statusCode(200);
     }
 
     @Test
     @Order(2)
     @TestSecurity(user = "testUser", roles = {"admin", "user"})
     void testGetAllEvents() {
-        given().get("/events").then().statusCode(200).body("size()", is(2));
+        when().
+                get("/events").
+                then().
+                statusCode(200).
+                body("size()", is(2));
     }
 
     @Test
@@ -50,6 +63,12 @@ class EventResourceTest {
     @TestSecurity(user = "testUser", roles = {"admin", "user"})
     void testGetEventById() {
         eventId = eventRepo.findAll().stream().toList().get(0).getId();
-        given().pathParam("eventId", eventId).when().get("/events/{eventId}").then().statusCode(200).body("id", is(eventId));
+        given().
+                pathParam("eventId", eventId).
+                when().
+                get("/events/{eventId}").
+                then().
+                statusCode(200).
+                body("id", is(eventId));
     }
 }
