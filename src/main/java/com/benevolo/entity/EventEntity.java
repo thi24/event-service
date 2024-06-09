@@ -32,6 +32,9 @@ public class EventEntity {
     @Column(name = "description")
     private String description;
 
+    @Column(name = "entry_started")
+    private boolean entryStarted;
+
     @OneToMany(mappedBy = "event")
     @JsonBackReference
     private List<TicketTypeEntity> ticketTypes;
@@ -127,5 +130,13 @@ public class EventEntity {
 
     public void setPicture(byte[] picture) {
         this.picture = picture;
+    }
+
+    public boolean isEntryStarted() {
+        return entryStarted;
+    }
+
+    public void setEntryStarted(boolean entryStarted) {
+        this.entryStarted = entryStarted;
     }
 }

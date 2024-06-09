@@ -56,4 +56,15 @@ public class EventService {
     public byte[] getPicture(String eventId) {
         return eventRepo.findById(eventId).getPicture();
     }
+
+    @Transactional
+    public EventEntity updateEntry(String eventId, EventEntity eventEntity) {
+        EventEntity existingEvent = eventRepo.findById(eventId);
+        if (existingEvent == null) {
+            throw new WebApplicationException("No event found for id: " + eventId, 404);
+        }
+        existingEvent.setEntryStarted(eventEntity.isEntryStarted());
+        return existingEvent;
+    }
+
 }

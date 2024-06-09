@@ -68,8 +68,9 @@ public class TicketTypeService {
     @Transactional
     public void update(String ticketTypeId, TicketTypeEntity ticketTypeEntity) {
         TicketTypeEntity existingTicketType = ticketTypeRepo.findById(ticketTypeId);
-        if (existingTicketType == null)
+        if (existingTicketType == null){
             throw new WebApplicationException("No ticket type found for id: " + ticketTypeId, 404);
+        }
         existingTicketType.setActive(ticketTypeEntity.isActive());
         existingTicketType.setCapacity(ticketTypeEntity.getCapacity());
         existingTicketType.setPrice(ticketTypeEntity.getPrice());
@@ -78,4 +79,16 @@ public class TicketTypeService {
         existingTicketType.setValidFrom(ticketTypeEntity.getValidFrom());
         existingTicketType.setValidTo(ticketTypeEntity.getValidTo());
     }
+
+    @Transactional
+    public TicketTypeEntity updateEntryStatus(String ticketTypeId, TicketTypeEntity ticketTypeEntity) {
+        TicketTypeEntity existingTicketType = ticketTypeRepo.findById(ticketTypeId);
+        if (existingTicketType == null) {
+            throw new WebApplicationException("No ticket type found for id: " + ticketTypeId, 404);
+        }
+        existingTicketType.setEntryStarted(ticketTypeEntity.isEntryStarted());
+        System.out.println("Entry started: " + existingTicketType.isEntryStarted());
+        return existingTicketType;
+    }
+
 }
