@@ -66,4 +66,11 @@ public class EventResource {
     public byte[] getImagePublic(@PathParam("eventId") String eventId) {
         return eventService.getPicture(eventId);
     }
+
+    @PUT
+    @Path("/{eventId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public EventEntity updateEntry(@PathParam("eventId") String eventId, EventEntity eventEntity) {
+        return eventService.updateEntry(eventId, eventEntity);
+    }
 }

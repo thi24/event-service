@@ -54,4 +54,10 @@ public class TicketTypeResource {
     public void update(@PathParam("ticketTypeId") String ticketTypeId, TicketTypeEntity ticketTypeEntity) {
         ticketTypeService.update(ticketTypeId, ticketTypeEntity);
     }
+
+    @PATCH
+    @Path("/{ticketTypeId}")
+    public TicketTypeEntity updateEntry(@PathParam("ticketTypeId") String ticketTypeId, TicketTypeEntity ticketTypeEntity) {
+        return ticketTypeService.updateEntryStatus(ticketTypeId, ticketTypeEntity);
+    }
 }
