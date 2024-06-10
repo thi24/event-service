@@ -35,7 +35,7 @@ public class TicketTypeService {
         }
         LocalDateTime dateNow = LocalDateTime.now();
         for (TicketTypeEntity ticketTypeEntity : ticketTypeEntities) {
-            if (dateNow.isAfter(ticketTypeEntity.getValidTo()) || dateNow.isBefore(ticketTypeEntity.getValidFrom()) || !ticketTypeEntity.isActive()) {
+            if (dateNow.isAfter(ticketTypeEntity.getValidTo()) || dateNow.isBefore(ticketTypeEntity.getValidFrom()) || !ticketTypeEntity.isActive() || ticketTypeEntity.isEntryStarted()) {
                 ticketTypeEntities.remove(ticketTypeEntity);
             }
         }
