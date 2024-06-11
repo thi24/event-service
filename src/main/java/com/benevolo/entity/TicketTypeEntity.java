@@ -25,7 +25,10 @@ public class TicketTypeEntity {
     @Column(name = "valid_to")
     private LocalDateTime validTo;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @Column(name = "entry_started")
+    private boolean entryStarted;
+
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "event_id")
     private EventEntity event;
 
@@ -125,5 +128,13 @@ public class TicketTypeEntity {
 
     public void setEvent(EventEntity event) {
         this.event = event;
+    }
+
+    public boolean isEntryStarted() {
+        return entryStarted;
+    }
+
+    public void setEntryStarted(boolean entryStarted) {
+        this.entryStarted = entryStarted;
     }
 }
