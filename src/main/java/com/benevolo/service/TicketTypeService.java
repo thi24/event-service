@@ -30,11 +30,12 @@ public class TicketTypeService {
 
     public List<TicketTypeEntity> getValidByEventId(String eventId) {
         List<TicketTypeEntity> ticketTypeEntities = ticketTypeRepo.findByEventId(eventId);
+        EventEntity event = eventRepo.findById(eventId);
         if (ticketTypeEntities.isEmpty()) {
             throw new WebApplicationException("No ticket types found for event with id: " + eventId, 404);
         }
         LocalDateTime dateNow = LocalDateTime.now();
-        ticketTypeEntities.removeIf(ticketTypeEntity -> dateNow.isAfter(ticketTypeEntity.getValidTo()) || dateNow.isBefore(ticketTypeEntity.getValidFrom()) || !ticketTypeEntity.isActive() || ticketTypeEntity.isEntryStarted());
+        ticketTypeEntities.removeIf(ticketTypeEntity -> dateNow.isAfter(ticketTypeEntity.getValidTo()) || dateNow.isBefore(ticketTypeEntity.getValidFrom()) || !ticketTypeEntity.isActive() || ticketTypeEntity.isEntryStarted() || event.isEntryStarted());
         return ticketTypeEntities;
     }
 
