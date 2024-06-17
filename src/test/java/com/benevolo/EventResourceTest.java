@@ -55,7 +55,7 @@ class EventResourceTest {
                 get("/events").
                 then().
                 statusCode(200).
-                body("size()", is(2));
+                body("size()", is(3));
     }
 
     @Test
