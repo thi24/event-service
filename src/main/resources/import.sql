@@ -45,6 +45,8 @@ VALUES ('a83f700f-5449-4e40-b509-bee0b5d139d6', 'Münchner Straße', 'Bayern', '
 
 INSERT INTO event(id, event_name, starts_at, ends_at, description, address_id, entry_started)
 VALUES ('383f700f-5449-4e40-b509-bee0b5d139d6', 'Weed Party 420', '2003-04-12 04:05:06', '2005-04-12 04:05:06',
+        'Smoke weed everyday', 'a83f700f-5449-4e40-b509-bee0b5d139d6', false),
+       ('aa34700f-5449-4e40-b509-bee0b5d139d6', 'Test Party Event', '2003-04-12 04:05:06', '2005-04-12 04:05:06',
         'Smoke weed everyday', 'a83f700f-5449-4e40-b509-bee0b5d139d6', false);
 
 INSERT INTO ticket_type(id, ticket_type_name, price, tax_rate, valid_from, valid_to, capacity, active, event_id, entry_started)

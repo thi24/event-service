@@ -5,6 +5,7 @@ import com.benevolo.entity.AddressEntity;
 import com.benevolo.entity.EventEntity;
 import com.benevolo.repo.AddressRepo;
 import com.benevolo.repo.EventRepo;
+import io.quarkus.panache.common.Parameters;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -67,4 +68,8 @@ public class EventService {
         return existingEvent;
     }
 
+    public List<EventEntity> findByName(String name) {
+        String likeName = "%" + name.toLowerCase() + "%";
+        return eventRepo.find("LOWER(eventName) LIKE :name", Parameters.with("name", likeName)).list();
+    }
 }
