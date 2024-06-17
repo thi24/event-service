@@ -38,6 +38,16 @@ public class EventResource {
     }
 
     @GET
+    @Path("/public/search")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<EventEntity> findByName(@QueryParam("name") String name) {
+        if(name != null) {
+            return eventService.findByName(name);
+        }
+        return eventService.findAll();
+    }
+
+    @GET
     @Path("/public/{eventId}")
     @Produces(MediaType.APPLICATION_JSON)
     public EventEntity getByIdPublic(@PathParam("eventId") String eventId) {
