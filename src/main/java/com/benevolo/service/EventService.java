@@ -46,7 +46,7 @@ public class EventService {
         eventEntity.setPicture(imageAsBytes);
         eventRepo.persist(eventEntity);
         // Start Process for Reminder on process engine
-        //processEngineClient.startEventReminderProcess();
+        processEngineClient.startEventReminderProcess(eventEntity);
         return eventEntity;
     }
 
