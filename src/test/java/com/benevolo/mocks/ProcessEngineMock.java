@@ -21,7 +21,7 @@ public class ProcessEngineMock implements QuarkusTestResourceLifecycleManager {
         wireMockServer.start();
 
         try {
-            wireMockServer.stubFor(post(urlMatching("/atlas_engine/api/v1/messages/Reminder/.*"))
+            wireMockServer.stubFor(post(urlMatching("/v1.0/messages/.*"))
                     .willReturn(aResponse()
                             .withHeader("Content-Type", "application/json")
                             .withBody(
@@ -30,7 +30,7 @@ public class ProcessEngineMock implements QuarkusTestResourceLifecycleManager {
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
-        
+
         return Map.of("quarkus.rest-client.process-engine.url", wireMockServer.baseUrl());
     }
 

@@ -1,9 +1,10 @@
 package com.benevolo.client;
 
-import io.quarkus.rest.client.reactive.ClientQueryParam;
+import com.benevolo.entity.EventEntity;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
+import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import org.eclipse.microprofile.rest.client.annotation.RegisterClientHeaders;
 import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
@@ -13,8 +14,8 @@ import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
 public interface ProcessEngineClient {
 
     @POST
-    @Path("/atlas_engine/api/v1/messages/Reminder/trigger")
-    @ClientQueryParam(name = "processInstanceId", value = "TicketReminder_Process")
+    @Path("/v1.0/messages/Eventanlegen")
     @Consumes(MediaType.APPLICATION_JSON)
-    void startEventReminderProcess();
+    @Produces(MediaType.APPLICATION_JSON)
+    void startEventReminderProcess(EventEntity eventEntity);
 }
