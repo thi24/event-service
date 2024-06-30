@@ -41,8 +41,8 @@ CREATE TABLE ticket_type (
 );
 
 INSERT INTO address(id, street, state, city, zip, country)
-VALUES ('a83f700f-5449-4e40-b509-bee0b5d139d6', 'Goethestraße', 'Bayern', 'Ingolstadt', '85049', 'DE'),
-       ('b2ae226f-5449-4e40-b509-bee0b5d139d6', 'Von-Reiche-Straße', 'Bayern', 'München', '95111', 'DE');
+VALUES ('a83f700f-5449-4e40-b509-bee0b5d139d6', 'Esplanade 10', 'Bayern', 'Ingolstadt', '85049', 'DE'),
+       ('b2ae226f-5449-4e40-b509-bee0b5d139d6', 'Esplanade 10', 'Bayern', 'Ingolstadt', '85049', 'DE');
 
 INSERT INTO event(id, event_name, starts_at, ends_at, description, address_id, entry_started)
 VALUES ('383f700f-5449-4e40-b509-bee0b5d139d6', 'THI Lan Party 2022', '2022-07-02 15:00:00', '2022-07-04 12:00:00',
