@@ -31,6 +31,10 @@ public class EventService {
         return eventRepo.findAll().stream().toList();
     }
 
+    public List<EventEntity> findAllCurrent() {
+        return eventRepo.find("endDate >= :now", Parameters.with("now", System.currentTimeMillis())).list();
+    }
+
     @Transactional
     public EventEntity save(EventEntity eventEntity, BufferedInputStream image) {
         byte[] imageAsBytes = null;

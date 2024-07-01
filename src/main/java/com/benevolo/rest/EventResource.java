@@ -34,14 +34,14 @@ public class EventResource {
     @Path("/public")
     @Produces(MediaType.APPLICATION_JSON)
     public List<EventEntity> getAllPublic() {
-        return eventService.findAll();
+        return eventService.findAllCurrent();
     }
 
     @GET
     @Path("/public/search")
     @Produces(MediaType.APPLICATION_JSON)
     public List<EventEntity> findByName(@QueryParam("name") String name) {
-        if(name != null) {
+        if (name != null) {
             return eventService.findByName(name);
         }
         return eventService.findAll();
