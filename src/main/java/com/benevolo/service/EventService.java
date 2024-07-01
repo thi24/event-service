@@ -33,7 +33,7 @@ public class EventService {
     }
 
     public List<EventEntity> findAllCurrent() {
-        return eventRepo.find("endDate >= :now", Parameters.with("now", LocalDateTime.now())).list();
+        return eventRepo.find("endsAt >= :date", Parameters.with("date", LocalDateTime.now())).list();
     }
 
     @Transactional
