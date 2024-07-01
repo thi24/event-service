@@ -13,6 +13,7 @@ import jakarta.ws.rs.WebApplicationException;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 
 import java.io.BufferedInputStream;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @ApplicationScoped
@@ -32,7 +33,7 @@ public class EventService {
     }
 
     public List<EventEntity> findAllCurrent() {
-        return eventRepo.find("endDate >= :now", Parameters.with("now", System.currentTimeMillis())).list();
+        return eventRepo.find("endDate >= :now", Parameters.with("now", LocalDateTime.now())).list();
     }
 
     @Transactional
