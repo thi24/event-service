@@ -13,6 +13,7 @@ import jakarta.ws.rs.WebApplicationException;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 
 import java.io.BufferedInputStream;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @ApplicationScoped
@@ -31,6 +32,10 @@ public class EventService {
         return eventRepo.findAll().stream().toList();
     }
 
+    public List<EventEntity> findAllCurrent() {
+        return eventRepo.find("endsAt >= :date", Parameters.with("date", LocalDateTime.now())).list();
+    }
+
     @Transactional
     public EventEntity save(EventEntity eventEntity, BufferedInputStream image) {
         byte[] imageAsBytes = null;
@@ -46,7 +51,7 @@ public class EventService {
         eventEntity.setPicture(imageAsBytes);
         eventRepo.persist(eventEntity);
         // Start Process for Reminder on process engine
-        processEngineClient.startEventReminderProcess(eventEntity);
+        //processEngineClient.startEventReminderProcess(eventEntity);
         return eventEntity;
     }
 
